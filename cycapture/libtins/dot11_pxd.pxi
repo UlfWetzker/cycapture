@@ -421,8 +421,8 @@ cdef extern from "tins/dot11/dot11_mgmt.h" namespace "Tins" nogil:
             cpp_bool apsd() const
             void apsd(cpp_bool new_value)
 
-            cpp_bool reserved() const
-            void reserved(cpp_bool new_value)
+            cpp_bool radio_measurement() const
+            void radio_measurement(cpp_bool new_value)
 
             cpp_bool dsss_ofdm() const
             void dsss_ofdm(cpp_bool new_value)

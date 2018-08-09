@@ -1264,16 +1264,16 @@ cdef class Capabilities(object):
             cdef cpp_bool val = 1 if value else 0
             self.cap_info.apsd(val)
 
-    property reserved:
+    property radio_measurement:
         """
-        reserved flag (read-write, `bool`)
+        radio_measurement flag (read-write, `bool`)
         """
         def __get__(self):
-            return bool(self.cap_info.reserved())
+            return bool(self.cap_info.radio_measurement())
 
         def __set__(self, value):
             cdef cpp_bool val = 1 if value else 0
-            self.cap_info.reserved(val)
+            self.cap_info.radio_measurement(val)
 
     property dsss_ofdm:
         """
