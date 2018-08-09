@@ -4,6 +4,7 @@
 import distutils.core
 from setuptools import setup, find_packages, Extension
 import os
+import errno
 import shlex
 import sysconfig
 import sys
@@ -119,10 +120,20 @@ class LibpcapDep(Dependency):
                 join(self.thisdir, 'cycapture', 'libpcap')
             )
 
-            os.symlink(
-                join(self.thisdir, 'cycapture', 'libpcap', 'libpcap.so.1'),
-                join(self.thisdir, 'cycapture', 'libpcap', 'libpcap.so')
-            )
+            try:
+                os.symlink(
+                    join(self.thisdir, 'cycapture', 'libpcap', 'libpcap.so.1'),
+                    join(self.thisdir, 'cycapture', 'libpcap', 'libpcap.so')
+                )
+            except OSError, e:
+                if e.errno == errno.EEXIST:
+                    os.remove(join(self.thisdir, 'cycapture', 'libpcap', 'libpcap.so'))
+                    os.symlink(
+                        join(self.thisdir, 'cycapture', 'libpcap', 'libpcap.so.1'),
+                        join(self.thisdir, 'cycapture', 'libpcap', 'libpcap.so')
+                    )
+                else:
+                    raise e
 
         if IS_MACOSX:
             self._extra_link_args = ["-Wl,-rpath", "-Wl,@loader_path/"]
@@ -174,13 +185,13 @@ class LibtinsDep(Dependency):
         os.chdir(old_dir)
 
         files_to_remove = [
-            join(self.thisdir, 'cycapture', 'libtins', 'libtins.3.2.dylib'),
+            join(self.thisdir, 'cycapture', 'libtins', 'libtins.4.0.dylib'),
             join(self.thisdir, 'cycapture', 'libtins', 'libtins.dylib'),
-            join(self.thisdir, 'cycapture', 'libtins', 'libtins.3.2.dylib'),
+            join(self.thisdir, 'cycapture', 'libtins', 'libtins.4.0.dylib'),
             join(self.thisdir, 'cycapture', 'libtins', 'libtins.dylib'),
             join(self.thisdir, 'cycapture', 'libtins', 'libtins.so'),
-            join(self.thisdir, 'cycapture', 'libtins', 'libtins.so.3.2'),
-            join(self.thisdir, 'cycapture', 'libtins', 'libtins.3.2.so')
+            join(self.thisdir, 'cycapture', 'libtins', 'libtins.so.4.0'),
+            join(self.thisdir, 'cycapture', 'libtins', 'libtins.4.0.so')
         ]
 
         for fname in files_to_remove:
@@ -191,12 +202,12 @@ class LibtinsDep(Dependency):
 
         if IS_MACOSX:
             shutil.copy(
-                join(self.src_dir, 'build', 'lib', 'libtins.3.2.dylib'),
+                join(self.src_dir, 'build', 'lib', 'libtins.4.0.dylib'),
                 join(self.thisdir, 'cycapture', 'libtins')
             )
 
             os.symlink(
-                join(self.thisdir, 'cycapture', 'libtins', 'libtins.3.2.dylib'),
+                join(self.thisdir, 'cycapture', 'libtins', 'libtins.4.0.dylib'),
                 join(self.thisdir, 'cycapture', 'libtins', 'libtins.dylib')
             )
 
@@ -209,12 +220,12 @@ class LibtinsDep(Dependency):
 
         if IS_LINUX:
             shutil.copy(
-                join(self.src_dir, 'build', 'lib', 'libtins.so.3.2'),
+                join(self.src_dir, 'build', 'lib', 'libtins.so.4.0'),
                 join(self.thisdir, 'cycapture', 'libtins')
             )
 
             os.symlink(
-                join(self.thisdir, 'cycapture', 'libtins', 'libtins.so.3.2'),
+                join(self.thisdir, 'cycapture', 'libtins', 'libtins.so.4.0'),
                 join(self.thisdir, 'cycapture', 'libtins', 'libtins.so')
             )
 
