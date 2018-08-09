@@ -66,9 +66,9 @@ cdef extern from "tins/dns.h" namespace "Tins" nogil:
 
     cdef cppclass cppDNS "Tins::DNS" (cppPDU):
 
-        cppclass cppQuery "Query":
-            Query(const string &nm, QueryType tp, QueryClass cl)
-            Query()
+        cppclass cppQuery "query":
+            query(const string &nm, QueryType tp, QueryClass cl)
+            query()
 
             const string &dname() const
             void dname(const string &nm) except +custom_exception_handler
