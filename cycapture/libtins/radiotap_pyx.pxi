@@ -224,10 +224,10 @@ cdef class RadioTap(PDU):
             except FieldNotPresent:
                 return None
 
-    property channel_plus:
+    property xchannel:
         def __get__(self):
             try:
-                return self.ptr.channel_plus()
+                return self.ptr.xchannel()
             except FieldNotPresent:
                 return None
 

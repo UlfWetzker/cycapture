@@ -50,6 +50,12 @@ cdef extern from "tins/radiotap.h" namespace "Tins" nogil:
         uint8_t flags,
         uint8_t mcs
 
+    struct xchannel_type "Tins::RadioTap::xchannel_type":
+        uint32_t flags,
+        uint16_t frequency,
+        uint8_t channel,
+        uint8_t max_power
+
     cppclass cppRadioTap "Tins::RadioTap" (cppPDU):
         cppRadioTap()
         cppRadioTap(const uint8_t *buf, uint32_t total_sz) except +custom_exception_handler
@@ -76,7 +82,7 @@ cdef extern from "tins/radiotap.h" namespace "Tins" nogil:
 
         uint16_t channel_freq() except +custom_exception_handler
         uint16_t channel_type() except +custom_exception_handler
-        uint32_t channel_plus() except +custom_exception_handler
+        xchannel_type xchannel() except +custom_exception_handler
         void channel(uint16_t new_freq, uint16_t new_type)
 
         int8_t dbm_signal() except +custom_exception_handler
