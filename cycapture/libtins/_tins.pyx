@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# distutils: language = c++
 
 # noinspection PyUnresolvedReferences
 from cython.operator cimport dereference as deref
