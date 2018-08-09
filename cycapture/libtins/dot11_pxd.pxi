@@ -610,7 +610,7 @@ cdef class Dot11ProbeResponse(Dot11ManagementFrame):
     pass
 
 cdef extern from "tins/dot11/dot11_control.h" namespace "Tins" nogil:
-    PDUType dot11_probe_request_pdu_flag "Tins::Dot11Control::pdu_flag"
+    PDUType dot11_control_pdu_flag "Tins::Dot11Control::pdu_flag"
     PDUType dot11_controlta_pdu_flag "Tins::Dot11ControlTA::pdu_flag"
     PDUType dot11_rts_pdu_flag "Tins::Dot11RTS::pdu_flag"
     PDUType dot11_pspoll_pdu_flag "Tins::Dot11PSPoll::pdu_flag"
