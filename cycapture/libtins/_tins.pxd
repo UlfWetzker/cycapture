@@ -33,10 +33,10 @@ from cython.operator cimport preincrement as inc
 from cython.view cimport memoryview as cy_memoryview
 
 # noinspection PyUnresolvedReferences
-from .._make_mview cimport make_mview_from_const_uchar_buf, make_mview_from_uchar_buf, mview_get_addr
+from .. _make_mview cimport make_mview_from_const_uchar_buf, make_mview_from_uchar_buf, mview_get_addr
 
 # noinspection PyUnresolvedReferences
-from ._py_exceptions cimport custom_exception_handler
+from . _py_exceptions cimport custom_exception_handler
 
 cdef extern from "wrap.h":
     cdef bint BSD_OR_ZERO
