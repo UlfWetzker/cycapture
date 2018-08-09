@@ -186,7 +186,7 @@ cdef class IP(PDU):
         'END': IP_OPT_NUMBER_END,
         'NOOP': IP_OPT_NUMBER_NOOP,
         'SEC': IP_OPT_NUMBER_SEC,
-        'LSSR': IP_OPT_NUMBER_LSSR,
+        'LSRR': IP_OPT_NUMBER_LSRR,
         'TIMESTAMP': IP_OPT_NUMBER_TIMESTAMP,
         'EXTSEC': IP_OPT_NUMBER_EXTSEC,
         'RR': IP_OPT_NUMBER_RR,

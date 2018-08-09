@@ -11,7 +11,7 @@ cdef extern from "tins/ip.h" namespace "Tins" nogil:
         IP_OPT_NUMBER_END "Tins::IP::END",
         IP_OPT_NUMBER_NOOP "Tins::IP::NOOP",
         IP_OPT_NUMBER_SEC "Tins::IP::SEC",
-        IP_OPT_NUMBER_LSSR "Tins::IP::LSSR",
+        IP_OPT_NUMBER_LSRR "Tins::IP::LSRR"
         IP_OPT_NUMBER_TIMESTAMP "Tins::IP::TIMESTAMP",
         IP_OPT_NUMBER_EXTSEC "Tins::IP::EXTSEC",
         IP_OPT_NUMBER_RR "Tins::IP::RR",
