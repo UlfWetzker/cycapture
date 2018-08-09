@@ -10,11 +10,30 @@ cdef extern from "tins/rsn_information.h" namespace "Tins" nogil:
         RSN_WEP_40 "Tins::RSNInformation::WEP_40",
         RSN_TKIP "Tins::RSNInformation::TKIP",
         RSN_CCMP "Tins::RSNInformation::CCMP",
-        RSN_WEP_104 "Tins::RSNInformation::WEP_104"
+        RSN_WEP_104 "Tins::RSNInformation::WEP_104",
+        RSN_BIP_CMAC_128 "Tins::RSNInformation::BIP_CMAC_128",
+        RSN_GCMP_128 "Tins::RSNInformation::GCMP_128",
+        RSN_GCMP_256 "Tins::RSNInformation::GCMP_256",
+        RSN_CCMP_256 "Tins::RSNInformation::CCMP_256",
+        RSN_BIP_GMAC_128 "Tins::RSNInformation::BIP_GMAC_128",
+        RSN_BIP_GMAC_256 "Tins::RSNInformation::BIP_GMAC_256",
+        RSN_BIP_CMAC_256 "Tins::RSNInformation::BIP_CMAC_256"
+
 
     ctypedef enum RSN_AKMSuites "Tins::RSNInformation::AKMSuites":
-        RSN_PMKSA "Tins::RSNInformation::PMKSA",
-        RSN_PSK "Tins::RSNInformation::PSK"
+        RSN_EAP "Tins::RSNInformation::EAP",
+        RSN_PSK "Tins::RSNInformation::PSK",
+        RSN_EAP_FT "Tins::RSNInformation::EAP_FT",
+        RSN_PSK_FT "Tins::RSNInformation::PSK_FT",
+        RSN_EAP_SHA256 "Tins::RSNInformation::EAP_SHA256",
+        RSN_PSK_SHA256 "Tins::RSNInformation::PSK_SHA256",
+        RSN_TDLS "Tins::RSNInformation::TDLS",
+        RSN_SAE_SHA256 "Tins::RSNInformation::SAE_SHA256",
+        RSN_SAE_FT "Tins::RSNInformation::SAE_FT",
+        RSN_APPEERKEY "Tins::RSNInformation::APPEERKEY",
+        RSN_EAP_SHA256_FIPSB "Tins::RSNInformation::EAP_SHA256_FIPSB",
+        RSN_EAP_SHA384_FIPSB "Tins::RSNInformation::EAP_SHA384_FIPSB",
+        RSN_EAP_SHA384 "Tins::RSNInformation::EAP_SHA384"
 
 
     cppclass cppRSNInformation "Tins::RSNInformation":

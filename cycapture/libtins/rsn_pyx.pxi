@@ -9,12 +9,30 @@ cdef class RSNInformation(object):
         'WEP_40': RSN_WEP_40,
         'TKIP': RSN_TKIP,
         'CCMP': RSN_CCMP,
-        'WEP_104': RSN_WEP_104
+        'WEP_104': RSN_WEP_104,
+        'BIP_CMAC_128': RSN_BIP_CMAC_128,
+        'GCMP_128': RSN_GCMP_128,
+        'GCMP_256': RSN_GCMP_256,
+        'CCMP_256': RSN_CCMP_256,
+        'BIP_GMAC_128': RSN_BIP_GMAC_128,
+        'BIP_GMAC_256': RSN_BIP_GMAC_256,
+        'BIP_CMAC_256': RSN_BIP_CMAC_256
     })
 
     AKMSuites = make_enum('RSN_AKMSuites', 'AKMSuites', 'the different akm suites', {
-        'PMKSA': RSN_PMKSA,
-        'PSK': RSN_PSK
+        'EAP': RSN_EAP,
+        'PSK': RSN_PSK,
+        'EAP_FT': RSN_EAP_FT,
+        'PSK_FT': RSN_PSK_FT,
+        'EAP_SHA256': RSN_EAP_SHA256,
+        'PSK_SHA256': RSN_PSK_SHA256,
+        'TDLS': RSN_TDLS,
+        'SHA256': RSN_SAE_SHA256,
+        'SAE_FT': RSN_SAE_FT,
+        'APPEERKEY': RSN_APPEERKEY,
+        'EAP_SHA256_FIPSB': RSN_EAP_SHA256_FIPSB,
+        'EAP_SHA364:FIPSB': RSN_EAP_SHA384_FIPSB,
+        'EAP_SHA384': RSN_EAP_SHA384
     })
 
     def __cinit__(self, _raw=False):
