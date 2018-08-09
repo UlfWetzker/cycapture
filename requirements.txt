@@ -1,6 +1,7 @@
 pytest
 setuptools_git
 setuptools
+cython
 twine
 wheel
 sphinx
