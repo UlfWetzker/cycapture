@@ -104,7 +104,7 @@ cdef extern from "tins/tcp.h" namespace "Tins" nogil:
 
         void add_option(const dhcp_option &opt)
         const dhcp_option* search_option(DHCP_OptionTypes opt) const
-        const cpp_list[dhcp_option] options() const
+        const vector[dhcp_option] options() const
 
         uint8_t type() except +custom_exception_handler
         void type(DHCP_Flags t)

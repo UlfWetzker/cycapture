@@ -124,19 +124,19 @@ cdef extern from "tins/dns.h" namespace "Tins" nogil:
         void rcode(uint8_t new_rcode)
 
         uint16_t questions_count() const
-        cpp_list[cppQuery] queries() const
+        vector[cppQuery] queries() const
         void add_query(const cppQuery &query)
 
         uint16_t answers_count() const
-        cpp_list[cppResource] answers() const
+        vector[cppResource] answers() const
         void add_answer(const cppResource &resource)
 
         uint16_t authority_count() const
-        cpp_list[cppResource] authority() const
+        vector[cppResource] authority() const
         void add_authority(const cppResource &resource)
 
         uint16_t additional_count() const
-        cpp_list[cppResource] additional() const
+        vector[cppResource] additional() const
         void add_additional(const cppResource &resource)
 
     cdef string cpp_encode_domain_name "Tins::DNS::encode_domain_name"(const string &domain_name)

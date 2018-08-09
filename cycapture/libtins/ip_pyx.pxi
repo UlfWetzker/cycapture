@@ -575,7 +575,7 @@ cdef class IP(PDU):
         opts: list of dicts
         """
         results = []
-        cdef cpp_list[ip_pdu_option] opts = self.ptr.options()
+        cdef vector[ip_pdu_option] opts = self.ptr.options()
         cdef ip_pdu_option opt
         for opt in opts:
             opt_length = int(opt.length_field())

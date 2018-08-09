@@ -429,7 +429,7 @@ cdef class DNS(PDU):
         queries: list of :py:class:`~.DNS_Query`
             the list of DNS queries contained in the DNS PDU
         """
-        cdef cpp_list[cppDNS.cppQuery] queries = self.ptr.queries()
+        cdef vector[cppDNS.cppQuery] queries = self.ptr.queries()
         return [DNS_Query(bytes(q.dname()), int(q.get_type()), int(q.query_class())) for q in queries]
 
     cpdef add_query(self, DNS_Query q):
@@ -466,7 +466,7 @@ cdef class DNS(PDU):
         answers: list of :py:class:`~.DNS_Resource`
             the list of DNS answers contained in the DNS PDU
         """
-        cdef cpp_list[cppDNS.cppResource] answers = self.ptr.answers()
+        cdef vector[cppDNS.cppResource] answers = self.ptr.answers()
         return [
             DNS_Resource(bytes(a.dname()), bytes(a.data()), int(a.get_type()), int(a.query_class()), int(a.ttl()))
             for a in answers
@@ -506,7 +506,7 @@ cdef class DNS(PDU):
         authority: list of :py:class:`~.DNS_Resource`
             the list of DNS authority records contained in the DNS PDU
         """
-        cdef cpp_list[cppDNS.cppResource] auths = self.ptr.authority()
+        cdef vector[cppDNS.cppResource] auths = self.ptr.authority()
         return [
             DNS_Resource(bytes(auth.dname()), bytes(auth.data()), int(auth.get_type()), int(auth.query_class()), int(auth.ttl()))
             for auth in auths
@@ -546,7 +546,7 @@ cdef class DNS(PDU):
         additional: list of :py:class:`~.DNS_Resource`
             the list of DNS additional records contained in the DNS PDU
         """
-        cdef cpp_list[cppDNS.cppResource] adds = self.ptr.additional()
+        cdef vector[cppDNS.cppResource] adds = self.ptr.additional()
         return [
             DNS_Resource(bytes(add.dname()), bytes(add.data()), int(add.get_type()), int(add.query_class()), int(add.ttl()))
             for add in adds

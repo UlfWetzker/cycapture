@@ -338,7 +338,7 @@ cdef class DHCP(BootP):
         -------
         options: list of 2-uple (option type `int`, data `bytes`)
         """
-        cdef cpp_list[dhcp_option] opts = (<cppDHCP*> self.ptr).options()
+        cdef vector[dhcp_option] opts = (<cppDHCP*> self.ptr).options()
         cdef dhcp_option opt
         results = []
         for opt in opts:

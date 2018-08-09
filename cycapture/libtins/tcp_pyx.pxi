@@ -331,7 +331,7 @@ cdef class TCP(PDU):
 
     cpdef options(self):
         result = []
-        cdef cpp_list[tcp_pdu_option] opts = self.ptr.options()
+        cdef vector[tcp_pdu_option] opts = self.ptr.options()
         cdef tcp_pdu_option opt
         for opt in opts:
             opt_length = int(opt.length_field())

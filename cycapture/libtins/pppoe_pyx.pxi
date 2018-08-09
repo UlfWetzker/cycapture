@@ -202,7 +202,7 @@ cdef class PPPoE(PDU):
         """
         def __get__(self):
             returned_tags = []
-            cdef cpp_list[pppoe_tag] all_tags = self.ptr.tags()
+            cdef vector[pppoe_tag] all_tags = self.ptr.tags()
             cdef pppoe_tag tag
             cdef size_t length
             for tag in all_tags:

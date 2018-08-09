@@ -144,7 +144,7 @@ cdef extern from "tins/dot11/dot11_base.h" namespace "Tins" nogil:
 
         void add_option(const dot11_pdu_option &opt)
         const dot11_pdu_option* search_option(D11_OptionTypes opt) const
-        const cpp_list[dot11_pdu_option]& options() const
+        const vector[dot11_pdu_option]& options() const
 
     # Note: allocate a cppDot11 with 'new' -> careful with memory management
     cppDot11* dot11_from_bytes "Tins::Dot11::from_bytes" (const uint8_t *buf, uint32_t total_sz) except +custom_exception_handler

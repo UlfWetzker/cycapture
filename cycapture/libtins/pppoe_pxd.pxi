@@ -43,7 +43,7 @@ cdef extern from "tins/pppoe.h" namespace "Tins" nogil:
         cppPPPoE()
         cppPPPoE(const uint8_t *buf, uint32_t total_sz) except +custom_exception_handler
 
-        const cpp_list[pppoe_tag] &tags() const
+        const vector[pppoe_tag] &tags() const
         const pppoe_tag* search_tag(PPPoE_TagTypes identifier) const
         void add_tag(const pppoe_tag &option)
 

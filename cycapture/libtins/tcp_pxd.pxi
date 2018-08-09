@@ -56,7 +56,7 @@ cdef extern from "tins/tcp.h" namespace "Tins" nogil:
         void flags(small_uint12 value)
 
         void add_option(const tcp_pdu_option &opt) except +custom_exception_handler
-        const cpp_list[tcp_pdu_option]& options() const
+        const vector[tcp_pdu_option]& options() const
         const tcp_pdu_option* search_option(TcpOptionTypes opt) const
 
         uint16_t mss() except +custom_exception_handler

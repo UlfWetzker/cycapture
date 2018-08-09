@@ -89,7 +89,7 @@ cdef extern from "tins/ip.h" namespace "Tins" nogil:
             generic_route_option_type(uint8_t ptr)
             generic_route_option_type(uint8_t ptr, vector[cppIPv4Address] rts)
 
-        const cpp_list[ip_pdu_option]& options() const
+        const vector[ip_pdu_option]& options() const
         const ip_pdu_option* search_option(cppIP.option_identifier ident) except +custom_exception_handler
         void add_option(const ip_pdu_option &opt) except +custom_exception_handler
 

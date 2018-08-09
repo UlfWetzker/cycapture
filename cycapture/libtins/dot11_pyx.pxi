@@ -357,7 +357,7 @@ cdef class Dot11(PDU):
         -------
         l: list of (int, bytes)
         """
-        cdef cpp_list[dot11_pdu_option] l = (<cppDot11*> self.ptr).options()
+        cdef vector[dot11_pdu_option] l = (<cppDot11*> self.ptr).options()
         return [
             (
                 int(opt.option()),
