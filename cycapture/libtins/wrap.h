@@ -25,7 +25,7 @@
 
 namespace Tins {
 
-    typedef HWAddress<6, uint8_t> HWAddress6;
+    typedef HWAddress<6> HWAddress6;
 
     typedef PDUOption<IP::option_identifier, IP> ip_pdu_option;
     typedef PDUOption<PPPoE::TagTypes, PPPoE> pppoe_tag;

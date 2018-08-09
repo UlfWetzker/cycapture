@@ -2,7 +2,7 @@
 
 cdef extern from "tins/hw_address.h" namespace "Tins" nogil:
 
-    cdef cppclass cppHWAddress6 "Tins::HWAddress<6, uint8_t>":
+    cdef cppclass cppHWAddress6 "Tins::HWAddress<6>":
         cppHWAddress6()
         cppHWAddress6(const unsigned char* ptr) except +ValueError
         cppHWAddress6(const string &) except +ValueError
@@ -19,9 +19,9 @@ cdef extern from "tins/hw_address.h" namespace "Tins" nogil:
         cpp_bool less "operator<" (const cppHWAddress6 &) const
         unsigned char operator[](size_t i) const
 
-    const cppHWAddress6 hw6_broadcast "Tins::HWAddress<6, uint8_t>::broadcast"
+    const cppHWAddress6 hw6_broadcast "Tins::HWAddress<6>::broadcast"
 
-    cdef cppclass cppHWAddress3 "Tins::HWAddress<3, uint8_t>":
+    cdef cppclass cppHWAddress3 "Tins::HWAddress<3>":
         cppHWAddress3()
         cppHWAddress3(const unsigned char* ptr) except +ValueError
         cppHWAddress3(const string &) except +ValueError
@@ -38,9 +38,9 @@ cdef extern from "tins/hw_address.h" namespace "Tins" nogil:
         cpp_bool less "operator<" (const cppHWAddress3 &) const
         unsigned char operator[](size_t i) const
 
-    const cppHWAddress3 hw3_broadcast "Tins::HWAddress<3, uint8_t>::broadcast"
+    const cppHWAddress3 hw3_broadcast "Tins::HWAddress<3>::broadcast"
 
-    cdef cppclass cppHWAddress8 "Tins::HWAddress<8, uint8_t>":
+    cdef cppclass cppHWAddress8 "Tins::HWAddress<8>":
         cppHWAddress8()
         cppHWAddress8(const unsigned char* ptr) except +ValueError
         cppHWAddress8(const string &) except +ValueError
@@ -57,9 +57,9 @@ cdef extern from "tins/hw_address.h" namespace "Tins" nogil:
         cpp_bool less "operator<" (const cppHWAddress8 &) const
         unsigned char operator[](size_t i) const
 
-    const cppHWAddress8 hw8_broadcast "Tins::HWAddress<8, uint8_t>::broadcast"
+    const cppHWAddress8 hw8_broadcast "Tins::HWAddress<8>::broadcast"
 
-    cdef cppclass cppHWAddress16 "Tins::HWAddress<16, uint8_t>":
+    cdef cppclass cppHWAddress16 "Tins::HWAddress<16>":
         cppHWAddress16()
         cppHWAddress16(const unsigned char* ptr) except +ValueError
         cppHWAddress16(const string &) except +ValueError
@@ -76,7 +76,7 @@ cdef extern from "tins/hw_address.h" namespace "Tins" nogil:
         cpp_bool less "operator<" (const cppHWAddress16 &) const
         unsigned char operator[](size_t i) const
 
-    const cppHWAddress3 hw16_broadcast "Tins::HWAddress<16, uint8_t>::broadcast"
+    const cppHWAddress3 hw16_broadcast "Tins::HWAddress<16>::broadcast"
 
 
 cdef class HWAddress(object):
