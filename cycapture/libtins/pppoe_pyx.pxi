@@ -41,177 +41,257 @@ cdef class PPPoE(PDU):
         The default constructor sets the version and type fields to ``0x1``.
         """
 
-    property version:
-        """
-        version field (read-write, `4 bits int`)
-        """
-        def __get__(self):
-            return int(<uint8_t> self.ptr.version())
-        def __set__(self, value):
-            self.ptr.version(small_uint4(<uint8_t> int(value)))
 
-    property type:
+    @property
+    def version(self):
         """
-        type field (read-write, `4 bits int`)
+        version field getter ('int')
         """
-        def __get__(self):
-            return int(<uint8_t> self.ptr.type())
-        def __set__(self, value):
-            self.ptr.type(small_uint4(<uint8_t> int(value)))
+        return int(<uint8_t> self.ptr.version())
 
-    property code:
+    @version.setter
+    def version(self, value):
         """
-        code field (read-write, `uint8_t`)
+        version field setter ('int')
         """
-        def __get__(self):
-            return int(self.ptr.code())
-        def __set__(self, value):
-            self.ptr.code(<uint8_t> int(value))
+        self.ptr.version(small_uint4(<uint8_t> int(value)))
 
-    property session_id:
-        """
-        session_id field (read-write, `uint16_t`)
-        """
-        def __get__(self):
-            return int(self.ptr.session_id())
-        def __set__(self, value):
-            self.ptr.session_id(<uint16_t> int(value))
 
-    property payload_length:
+    @property
+    def type(self):
         """
-        the payload_length field (read-write, `uint16_t`)
+        type field getter('int')
         """
-        def __get__(self):
-            return int(self.ptr.payload_length())
-        def __set__(self, value):
-            self.ptr.payload_length(<uint16_t> int(value))
+        return int(<uint8_t> self.ptr.type())
 
-    property service_name:
+    @type.setter
+    def type(self, value):
         """
-        service-name tag (read-write, `bytes`)
+        type field setter ('int')
         """
-        def __get__(self):
-            try:
-                return <bytes> (self.ptr.service_name())
-            except OptionNotFound:
-                return None
-        def __set__(self, value):
-            value = bytes(value)
-            self.ptr.service_name(<string> (<bytes> value))
+        self.ptr.type(small_uint4(<uint8_t> int(value)))
 
-    property ac_name:
-        """
-        AC-name tag (read-write, `bytes`)
-        """
-        def __get__(self):
-            try:
-                return <bytes> (self.ptr.ac_name())
-            except OptionNotFound:
-                return None
-        def __set__(self, value):
-            value = bytes(value)
-            self.ptr.ac_name(<string> (<bytes> value))
 
-    property service_name_error:
+    @property
+    def code(self):
         """
-        Service-Name-Error tag (read-write, `bytes`)
+        code field getter ('int')
         """
-        def __get__(self):
-            try:
-                return <bytes> (self.ptr.service_name_error())
-            except OptionNotFound:
-                return None
-        def __set__(self, value):
-            value = bytes(value)
-            self.ptr.service_name_error(<string> (<bytes> value))
+        return int(self.ptr.code())
 
-    property ac_system_error:
+    @code.setter
+    def code(self, value):
         """
-        AC-System-Error tag (read-write, `bytes`)
+        code field setter ('int')
         """
-        def __get__(self):
-            try:
-                return <bytes> (self.ptr.ac_system_error())
-            except OptionNotFound:
-                return None
-        def __set__(self, value):
-            value = bytes(value)
-            self.ptr.ac_system_error(<string> (<bytes> value))
+        self.ptr.code(<uint8_t> int(value))
 
-    property generic_error:
-        """
-        Generic-Error tag (read-write, `bytes`)
-        """
-        def __get__(self):
-            try:
-                return <bytes> (self.ptr.generic_error())
-            except OptionNotFound:
-                return None
-        def __set__(self, value):
-            value = bytes(value)
-            self.ptr.generic_error(<string> (<bytes> value))
 
-    property host_uniq:
+    @property
+    def session_id(self):
         """
-        host-uniq tag (read-write, `bytes`)
+        session_id field getter ('int')
         """
-        def __get__(self):
-            cdef vector[uint8_t] v = self.ptr.host_uniq()
-            cdef uint8_t* p = &v[0]
-            return <bytes> p[:v.size()]
-        def __set__(self, value):
-            value = bytes(value)
-            cdef uint8_t* p = <uint8_t*> (<bytes> value)
-            cdef vector[uint8_t] v
-            v.assign(p, p + len(value))
-            self.ptr.host_uniq(v)
+        return int(self.ptr.session_id())
 
-    property ac_cookie:
+    @session_id.setter
+    def session_id(self, value):
         """
-        AC-Cookie tag (read-write, `bytes`)
+        session_id field setter ('int')
         """
-        def __get__(self):
-            cdef vector[uint8_t] v = self.ptr.ac_cookie()
-            cdef uint8_t* p = &v[0]
-            return <bytes> p[:v.size()]
-        def __set__(self, value):
-            value = bytes(value)
-            cdef uint8_t* p = <uint8_t*> (<bytes> value)
-            cdef vector[uint8_t] v
-            v.assign(p, p + len(value))
-            self.ptr.ac_cookie(v)
+        self.ptr.session_id(<uint16_t> int(value))
 
-    property relay_session_id:
-        """
-        Relay-Session-Id tag (read-write, `bytes`)
-        """
-        def __get__(self):
-            cdef vector[uint8_t] v = self.ptr.relay_session_id()
-            cdef uint8_t* p = &v[0]
-            return <bytes> p[:v.size()]
-        def __set__(self, value):
-            value = bytes(value)
-            cdef uint8_t* p = <uint8_t*> (<bytes> value)
-            cdef vector[uint8_t] v
-            v.assign(p, p + len(value))
-            self.ptr.relay_session_id(v)
 
-    property tags:
+    @property
+    def payload_length(self):
         """
-        The list of current tags (read-only)
+        the payload_length field getter ('int')
         """
-        def __get__(self):
-            returned_tags = []
-            cdef vector[pppoe_tag] all_tags = self.ptr.tags()
-            cdef pppoe_tag tag
-            cdef size_t length
-            for tag in all_tags:
-                length = tag.data_size()
-                returned_tags.append((
-                    int(tag.option()),
-                    b"" if length == 0 else <bytes> ((tag.data_ptr())[:length])
-                ))
-            return returned_tags
+        return int(self.ptr.payload_length())
+
+    @payload_length.setter
+    def payload_length(self, value):
+        """
+        the payload_length field setter ('int')
+        """
+        self.ptr.payload_length(<uint16_t> int(value))
+
+
+    @property
+    def service_name(self):
+        """
+        service-name tag getter('bytes')
+        """
+        try:
+            return <bytes> (self.ptr.service_name())
+        except OptionNotFound:
+            return None
+
+    @service_name.setter
+    def service_name(self, value):
+        """
+        service-name tag setter ('bytes')
+        """
+        value = bytes(value)
+        self.ptr.service_name(<string> (<bytes> value))
+
+
+    @property
+    def ac_name(self):
+        """
+        AC-name tag getter ('bytes')
+        """
+        try:
+            return <bytes> (self.ptr.ac_name())
+        except OptionNotFound:
+            return None
+
+    @ac_name.setter
+    def ac_name(self, value):
+        """
+        AC-name tag setter ('bytes')
+        """
+        value = bytes(value)
+        self.ptr.ac_name(<string> (<bytes> value))
+
+
+    @property
+    def service_name_error(self):
+        """
+        Service-Name-Error tag getter ('bytes')
+        """
+        try:
+            return <bytes> (self.ptr.service_name_error())
+        except OptionNotFound:
+            return None
+
+    @service_name_error.setter
+    def service_name_error(self, value):
+        """
+        Service-Name-Error tag ('bytes')
+        """
+        value = bytes(value)
+        self.ptr.service_name_error(<string> (<bytes> value))
+
+
+    @property
+    def ac_system_error(self):
+        """
+        AC-System-Error tag getter ('bytes')
+        """
+        try:
+            return <bytes> (self.ptr.ac_system_error())
+        except OptionNotFound:
+            return None
+
+    @ac_system_error.setter
+    def ac_system_error(self, value):
+        """
+        AC-System-Error tag setter ('bytes')
+        """
+        value = bytes(value)
+        self.ptr.ac_system_error(<string> (<bytes> value))
+
+
+    @property
+    def generic_error(self):
+        """
+        Generic-Error tag getter ('bytes')
+        """
+        try:
+            return <bytes> (self.ptr.generic_error())
+        except OptionNotFound:
+            return None
+
+    @generic_error.setter
+    def generic_error(self, value):
+        """
+        Generic-Error tag setter ('bytes')
+        """
+        value = bytes(value)
+        self.ptr.generic_error(<string> (<bytes> value))
+
+
+    @property
+    def  host_uniq(self):
+        """
+        Host-uniq tag getter ('bytes')
+        """
+        cdef vector[uint8_t] v = self.ptr.host_uniq()
+        cdef uint8_t* p = &v[0]
+        return <bytes> p[:v.size()]
+
+    @host_uniq.setter
+    def  host_uniq(self, value):
+        """
+        host-uniq tag setter ('bytes')
+        """
+        value = bytes(value)
+        cdef uint8_t* p = <uint8_t*> (<bytes> value)
+        cdef vector[uint8_t] v
+        v.assign(p, p + len(value))
+        self.ptr.host_uniq(v)
+
+
+    @property
+    def ac_cookie(self):
+        """
+        AC-Cookie tag getter ('bytes')
+        """
+        cdef vector[uint8_t] v = self.ptr.ac_cookie()
+        cdef uint8_t* p = &v[0]
+        return <bytes> p[:v.size()]
+
+    @ac_cookie.setter
+    def ac_cookie(self, value):
+        """
+        AC-Cookie tag setter ('bytes')
+        """
+        value = bytes(value)
+        cdef uint8_t* p = <uint8_t*> (<bytes> value)
+        cdef vector[uint8_t] v
+        v.assign(p, p + len(value))
+        self.ptr.ac_cookie(v)
+
+
+    @property
+    def relay_session_id(self):
+        """
+        Relay-Session-Id tag getter ('bytes')
+        """
+        cdef vector[uint8_t] v = self.ptr.relay_session_id()
+        cdef uint8_t* p = &v[0]
+        return <bytes> p[:v.size()]
+
+    @relay_session_id.setter
+    def relay_session_id(self, value):
+        """
+        Relay-Session-Id tag setter ('bytes')
+        """
+        value = bytes(value)
+        cdef uint8_t* p = <uint8_t*> (<bytes> value)
+        cdef vector[uint8_t] v
+        v.assign(p, p + len(value))
+        self.ptr.relay_session_id(v)
+
+
+    @property
+    def tags(self):
+        """
+        Current tags list getter ('list')
+        """
+        returned_tags = []
+        cdef vector[pppoe_tag] all_tags = self.ptr.tags()
+        cdef pppoe_tag tag
+        cdef size_t length
+        for tag in all_tags:
+            length = tag.data_size()
+            returned_tags.append((
+                int(tag.option()),
+                b"" if length == 0 else <bytes> ((tag.data_ptr())[:length])
+            ))
+        return returned_tags
+
 
     cpdef search_tag(self, tag_type):
         """

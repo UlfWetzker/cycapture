@@ -56,117 +56,183 @@ cdef class ICMP(PDU):
             The type flag which will be set (`ECHO_REQUEST` if none provided)
         """
 
-    property checksum:
+    @property
+    def checksum(self):
         """
-        The checksum field (read-only)
+        The checksum field getter ('int')
         """
-        def __get__(self):
-            return self.ptr.checksum()
+        return self.ptr.checksum()
 
-    property code:
-        """
-        Code field (read-write, `uint8_t`)
-        """
-        def __get__(self):
-            return self.ptr.code()
-        def __set__(self, value):
-            self.ptr.code(<uint8_t> int(value))
 
-    property type:
+    @property
+    def code(self):
         """
-        Type field (read-write, :py:class:`~.ICMP.Flags`
+        Code field getter ('int')
         """
-        def __get__(self):
-            return self.ptr.get_type()
+        return self.ptr.code()
 
-        def __set__(self, value):
-            value = ICMP.Flags(value)
-            self.ptr.set_type(<ICMP_Flags>value)
+    @code.setter
+    def code(self, value):
+        """
+        Code field setter ('int')
+        """
+        self.ptr.code(<uint8_t> int(value))
 
-    property id:
-        """
-        Id field (read-write, `uint16_t`)
-        """
-        def __get__(self):
-            return self.ptr.ident()
-        def __set__(self, value):
-            self.ptr.ident(<uint16_t> value)
 
-    property sequence:
+    @property
+    def type(self):
         """
-        Sequence field (read-write, `uint16_t`)
+        Type field getter (:py:class:`~.ICMP.Flags`)
         """
-        def __get__(self):
-            return self.ptr.sequence()
-        def __set__(self, value):
-            self.ptr.sequence(<uint16_t> value)
+        return self.ptr.get_type()
 
-    property mtu:
+    @type.setter
+    def type(self, value):
         """
-        MTU field (read-write, `uint16_t`)
+        Type field setter (:py:class:`~.ICMP.Flags`)
         """
-        def __get__(self):
-            return self.ptr.mtu()
-        def __set__(self, value):
-            self.ptr.mtu(<uint16_t> value)
+        value = ICMP.Flags(value)
+        self.ptr.set_type(<ICMP_Flags>value)
 
-    property pointer:
-        """
-        Pointer field (read-write, `uint8_t`)
-        """
-        def __get__(self):
-            return self.ptr.pointer()
-        def __set__(self, value):
-            self.ptr.pointer(<uint8_t> value)
 
-    property original_timestamp:
+    @property
+    def id(self):
         """
-        Original timestamp field (read-write, `uint32_t`)
+        Id field getter ('int')
         """
-        def __get__(self):
-            return self.ptr.original_timestamp()
-        def __set__(self, value):
-            self.ptr.original_timestamp(<uint32_t> value)
+        return self.ptr.ident()
 
-    property receive_timestamp:
+    @id.setter
+    def id(self, value):
         """
-        Receive timestamp field (read-write, `uint32_t`)
+        Id field setter ('int')
         """
-        def __get__(self):
-            return self.ptr.receive_timestamp()
-        def __set__(self, value):
-            self.ptr.receive_timestamp(<uint32_t> value)
+        self.ptr.ident(<uint16_t> value)
 
-    property transmit_timestamp:
-        """
-        Transmit timestamp field (read-write, `uint32_t`)
-        """
-        def __get__(self):
-            return self.ptr.transmit_timestamp()
-        def __set__(self, value):
-            self.ptr.transmit_timestamp(<uint32_t> value)
 
-    property gateway:
+    @property
+    def sequence(self):
         """
-        Gateway field (read-write, :py:class:`~.IPv4Address`)
+        Sequence field getter ('int')
         """
-        def __get__(self):
-            cdef cppIPv4Address g = self.ptr.gateway()
-            return IPv4Address.factory(&g)
-        def __set__(self, value):
-            addr = IPv4Address(value)
-            self.ptr.gateway(<cppIPv4Address>(addr.ptr[0]))
+        return self.ptr.sequence()
 
-    property address_mask:
+    @sequence.setter
+    def sequence(self, value):
         """
-        Address mask field (read-write, :py:class:`~.IPv4Address`)
+        Sequence field setter ('int')
         """
-        def __get__(self):
-            cdef cppIPv4Address mask = self.ptr.address_mask()
-            return IPv4Address.factory(&mask)
-        def __set__(self, value):
-            addr = IPv4Address(value)
-            self.ptr.address_mask(<cppIPv4Address>(addr.ptr[0]))
+        self.ptr.sequence(<uint16_t> value)
+
+
+    @property
+    def mtu(self):
+        """
+        MTU field getter ('int')
+        """
+        return self.ptr.mtu()
+
+    @mtu.setter
+    def mtu(self, value):
+        """
+        MTU field setter ('int')
+        """
+        self.ptr.mtu(<uint16_t> value)
+
+
+    @property
+    def pointer(self):
+        """
+        Pointer field getter ('int')
+        """
+        return self.ptr.pointer()
+
+    @pointer.setter
+    def pointer(self, value):
+        """
+        Pointer field setter ('int')
+        """
+        self.ptr.pointer(<uint8_t> value)
+
+
+    @property
+    def original_timestamp(self):
+        """
+        Original timestamp field getter ('int')
+        """
+        return self.ptr.original_timestamp()
+
+    @original_timestamp.setter
+    def original_timestamp(self, value):
+        """
+        Original timestamp field setter ('int')
+        """
+        self.ptr.original_timestamp(<uint32_t> value)
+
+
+    @property
+    def receive_timestamp(self):
+        """
+        Receive timestamp field getter ('int')
+        """
+        return self.ptr.receive_timestamp()
+
+    @receive_timestamp.setter
+    def receive_timestamp(self, value):
+        """
+        Receive timestamp field setter ('int')
+        """
+        self.ptr.receive_timestamp(<uint32_t> value)
+
+
+    @property
+    def transmit_timestamp(self):
+        """
+        Transmit timestamp field getter ('int')
+        """
+        return self.ptr.transmit_timestamp()
+
+    @transmit_timestamp.setter
+    def transmit_timestamp(self, value):
+        """
+        Transmit timestamp field setter ('int')
+        """
+        self.ptr.transmit_timestamp(<uint32_t> value)
+
+
+    @property
+    def gateway(self):
+        """
+        Gateway field getter (:py:class:`~.IPv4Address`)
+        """
+        cdef cppIPv4Address g = self.ptr.gateway()
+        return IPv4Address.factory(&g)
+
+    @gateway.setter
+    def gateway(self, value):
+        """
+        Gateway field setter (:py:class:`~.IPv4Address`)
+        """
+        addr = IPv4Address(value)
+        self.ptr.gateway(<cppIPv4Address>(addr.ptr[0]))
+
+
+    @property
+    def address_mask(self):
+        """
+        Address mask field getter (:py:class:`~.IPv4Address`)
+        """
+        cdef cppIPv4Address mask = self.ptr.address_mask()
+        return IPv4Address.factory(&mask)
+
+    @address_mask.setter
+    def address_mask(self, value):
+        """
+        Address mask field setter (:py:class:`~.IPv4Address`)
+        """
+        addr = IPv4Address(value)
+        self.ptr.address_mask(<cppIPv4Address>(addr.ptr[0]))
+
 
     cpdef set_dest_unreachable(self):
         """

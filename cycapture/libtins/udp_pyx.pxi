@@ -47,45 +47,63 @@ cdef class UDP(PDU):
         """
         pass
 
-    property sport:
+    @property
+    def sport(self):
         """
-        Source port (read-write, `uint16_t`)
+        Source port getter ('int')
         """
-        def __get__(self):
-            return int(self.ptr.sport())
-        def __set__(self, value):
-            if value is None:
-                value = 0
-            self.ptr.sport(<uint16_t> int(value))
+        return int(self.ptr.sport())
 
-    property dport:
+    @sport.setter
+    def sport(self, value):
         """
-        Destination port (read-write, `uint16_t`)
+        Source port setter ('int')
         """
-        def __get__(self):
-            return int(self.ptr.dport())
-        def __set__(self, value):
-            if value is None:
-                value = 0
-            self.ptr.dport(<uint16_t> int(value))
+        if value is None:
+            value = 0
+        self.ptr.sport(<uint16_t> int(value))
 
-    property length:
-        """
-        Length of the datagram (read-write, `uint16_t`)
-        """
-        def __get__(self):
-            return int(self.ptr.length())
-        def __set__(self, value):
-            if value is None:
-                value = 0
-            self.ptr.length(<uint16_t> int(value))
 
-    property checksum:
+    @property
+    def dport(self):
         """
-        checksum of the datagram (read-only)
+        Destination port getter ('int')
         """
-        def __get__(self):
-            return int(self.ptr.checksum())
+        return int(self.ptr.dport())
+
+    @dport.setter
+    def dport(self, value):
+        """
+        Destination port setter ('int')
+        """
+        if value is None:
+            value = 0
+        self.ptr.dport(<uint16_t> int(value))
+
+
+    @property
+    def length(self):
+        """
+        Length of the datagram getter ('int')
+        """
+        return int(self.ptr.length())
+
+    @length.setter
+    def length(self, value):
+        """
+        Length of the datagram setter ('int')
+        """
+        if value is None:
+            value = 0
+        self.ptr.length(<uint16_t> int(value))
+
+
+    @property
+    def checksum(self):
+        """
+        Getter for the checksum of the datagram ('int')
+        """
+        return int(self.ptr.checksum())
 
 
     cdef cppPDU* replace_ptr_with_buf(self, uint8_t* buf, int size) except NULL:

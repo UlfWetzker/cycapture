@@ -31,46 +31,66 @@ cdef class SNAP(PDU):
         The constructor sets the `dsap` and `ssap` fields to ``0xaa``, and the `id` field to ``3``.
         """
 
-    property org_code:
+    @property
+    def org_code(self):
         """
-        Organization Code field (read-write, `24 bits int`)
+        Organization Code field getter ('int')
         """
-        def __get__(self):
-            return int(<uint32_t> self.ptr.org_code())
-        def __set__(self, value):
-            self.ptr.org_code(small_uint24(<uint32_t> int(value)))
+        return int(<uint32_t> self.ptr.org_code())
 
-    property eth_type:
+    @org_code.setter
+    def org_code(self, value):
         """
-        Ethernet Type field (read-write, `uint16_t`)
+        Organization Code field setter ('int')
         """
-        def __get__(self):
-            return int(self.ptr.eth_type())
-        def __set__(self, value):
-            self.ptr.eth_type(<uint16_t> int(value))
+        self.ptr.org_code(small_uint24(<uint32_t> int(value)))
 
-    property control:
-        """
-        Control field (read-write, `uint8_t`)
-        """
-        def __get__(self):
-            return int(self.ptr.control())
-        def __set__(self, value):
-            self.ptr.control(<uint8_t> int(value))
 
-    property dsap:
+    @property
+    def eth_type(self):
         """
-        DSAP field (read-only)
+        Ethernet Type field getter ('int')
         """
-        def __get__(self):
-            return int(self.ptr.dsap())
+        return int(self.ptr.eth_type())
 
-    property ssap:
+    @eth_type.setter
+    def eth_type(self, value):
         """
-        SSAP field (read-only)
+        Ethernet Type field setter ('int')
         """
-        def __get__(self):
-            return int(self.ptr.ssap())
+        self.ptr.eth_type(<uint16_t> int(value))
+
+
+    @property
+    def control(self):
+        """
+        Control field getter ('int')
+        """
+        return int(self.ptr.control())
+
+    @control.setter
+    def control(self, value):
+        """
+        Control field setter ('int')
+        """
+        self.ptr.control(<uint8_t> int(value))
+
+
+    @property
+    def dsap(self):
+        """
+        DSAP field getter ('int')
+        """
+        return int(self.ptr.dsap())
+
+
+    @property
+    def ssap(self):
+        """
+        SSAP field getter ('int')
+        """
+        return int(self.ptr.ssap())
+
 
     cdef cppPDU* replace_ptr_with_buf(self, uint8_t* buf, int size) except NULL:
         if self.ptr is not NULL and self.parent is None:

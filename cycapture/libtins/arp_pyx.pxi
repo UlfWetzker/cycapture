@@ -133,96 +133,114 @@ cdef class ARP(PDU):
 
         return EthernetII.from_ptr(eth_pdu.clone(), parent=None)
 
-    property sender_hw_addr:
-        """
-        Sender's hardware address (read-write, :py:class:`~.HWAddress`)
-        """
-        def __get__(self):
-            return HWAddress(<bytes>(self.ptr.sender_hw_addr().to_string()))
-        def __set__(self, value):
-            if not isinstance(value, HWAddress):
-                value = HWAddress(value)
-            self.ptr.sender_hw_addr((<HWAddress> value).ptr[0])
+    """
+    Sender's hardware address (read-write, :py:class:`~.HWAddress`)
+    """
+    @property
+    def sender_hw_addr(self):
+        return HWAddress(<bytes>(self.ptr.sender_hw_addr().to_string()))
 
-    property target_hw_addr:
-        """
-        Target's hardware address (read-write, :py:class:`~.HWAddress`)
-        """
-        def __get__(self):
-            return HWAddress(<bytes>(self.ptr.target_hw_addr().to_string()))
-        def __set__(self, value):
-            if not isinstance(value, HWAddress):
-                value = HWAddress(value)
-            self.ptr.target_hw_addr((<HWAddress> value).ptr[0])
+    @sender_hw_addr.setter
+    def sender_hw_addr(self, value):
+        if not isinstance(value, HWAddress):
+            value = HWAddress(value)
+        self.ptr.sender_hw_addr((<HWAddress> value).ptr[0])
 
-    property sender_ip_addr:
-        """
-        Sender's IP address (read-write, :py:class:`~.IPv4Address`)
-        """
-        def __get__(self):
-            return IPv4Address(<bytes>(self.ptr.sender_ip_addr().to_string()))
-        def __set__(self, value):
-            if not isinstance(value, IPv4Address):
-                value = IPv4Address(value)
-            self.ptr.sender_ip_addr((<IPv4Address> value).ptr[0])
+    """
+    Target's hardware address (read-write, :py:class:`~.HWAddress`)
+    """
+    @property
+    def target_hw_addr(self):
+        return HWAddress(<bytes>(self.ptr.target_hw_addr().to_string()))
 
-    property target_ip_addr:
-        """
-        Target's IP address (read-write, :py:class:`~.IPv4Address`)
-        """
-        def __get__(self):
-            return IPv4Address(<bytes>(self.ptr.target_ip_addr().to_string()))
-        def __set__(self, value):
-            if not isinstance(value, IPv4Address):
-                value = IPv4Address(value)
-            self.ptr.target_ip_addr((<IPv4Address> value).ptr[0])
+    @target_hw_addr.setter
+    def target_hw_addr(self, value):
+        if not isinstance(value, HWAddress):
+            value = HWAddress(value)
+        self.ptr.target_hw_addr((<HWAddress> value).ptr[0])
 
-    property hw_addr_format:
-        """
-        Hardware address format field (read-write, `uint16_t`)
-        """
-        def __get__(self):
-            return self.ptr.hw_addr_format()
-        def __set__(self, value):
-            self.ptr.hw_addr_format(<uint16_t>int(value))
+    """
+    Sender's IP address (read-write, :py:class:`~.IPv4Address`)
+    """
+    @property
+    def sender_ip_addr(self):
+        return IPv4Address(<bytes>(self.ptr.sender_ip_addr().to_string()))
 
-    property prot_addr_format:
-        """
-        Protocol address format field (read-write, `uint16_t`)
-        """
-        def __get__(self):
-            return self.ptr.prot_addr_format()
-        def __set__(self, value):
-            self.ptr.prot_addr_format(<uint16_t>int(value))
+    @sender_ip_addr.setter
+    def sender_ip_addr(self, value):
+        if not isinstance(value, IPv4Address):
+            value = IPv4Address(value)
+        self.ptr.sender_ip_addr((<IPv4Address> value).ptr[0])
 
-    property hw_addr_length:
-        """
-        Hardware address length field (read-write, `uint8_t`)
-        """
-        def __get__(self):
-            return self.ptr.hw_addr_length()
-        def __set__(self, value):
-            self.ptr.hw_addr_length(<uint8_t>int(value))
+    """
+    Target's IP address (read-write, :py:class:`~.IPv4Address`)
+    """
+    @property
+    def target_ip_addr(self):
+        return IPv4Address(<bytes>(self.ptr.target_ip_addr().to_string()))
 
-    property prot_addr_length:
-        """
-        Protocol address length field (read-write, `uint8_t`)
-        """
-        def __get__(self):
-            return self.ptr.prot_addr_length()
-        def __set__(self, value):
-            self.ptr.prot_addr_length(<uint8_t>int(value))
+    @target_ip_addr.setter
+    def target_ip_addr(self, value):
+        if not isinstance(value, IPv4Address):
+            value = IPv4Address(value)
+        self.ptr.target_ip_addr((<IPv4Address> value).ptr[0])
 
-    property opcode:
-        """
-        ARP opcode field (:py:class:`~.ARP.Flags`)
-        """
-        def __get__(self):
-            return self.ptr.opcode()
-        def __set__(self, value):
-            if isinstance(value, ARP.Flags):
-                value = value.value
-            self.ptr.opcode(<ARP_Flags> value)
+    """
+    Hardware address format field (read-write, `uint16_t`)
+    """
+    @property
+    def hw_addr_format(self):
+        return self.ptr.hw_addr_format()
+    
+    @hw_addr_format.setter
+    def hw_addr_format(self, value):
+        self.ptr.hw_addr_format(<uint16_t>int(value))
+
+    """
+    Protocol address format field (read-write, `uint16_t`)
+    """
+    @property
+    def prot_addr_format(self):
+        return self.ptr.prot_addr_format()
+
+    @prot_addr_format.setter
+    def prot_addr_format(self, value):
+        self.ptr.prot_addr_format(<uint16_t>int(value))
+
+    """
+    Hardware address length field (read-write, `uint8_t`)
+    """
+    @property
+    def hw_addr_length(self):
+        return self.ptr.hw_addr_length()
+
+    @hw_addr_length.setter
+    def hw_addr_length(self, value):
+        self.ptr.hw_addr_length(<uint8_t>int(value))
+
+    """
+    Protocol address length field (read-write, `uint8_t`)
+    """
+    @property
+    def prot_addr_length(self):
+        return self.ptr.prot_addr_length()
+
+    @prot_addr_length.setter
+    def prot_addr_length(self, value):
+        self.ptr.prot_addr_length(<uint8_t>int(value))
+
+    """
+    ARP opcode field (:py:class:`~.ARP.Flags`)
+    """
+    @property
+    def opcode(self):
+        return self.ptr.opcode()
+
+    @opcode.setter
+    def opcode(self, value):
+        if isinstance(value, ARP.Flags):
+            value = value.value
+        self.ptr.opcode(<ARP_Flags> value)
 
     cdef cppPDU* replace_ptr_with_buf(self, uint8_t* buf, int size) except NULL:
         if self.ptr is not NULL and self.parent is None:

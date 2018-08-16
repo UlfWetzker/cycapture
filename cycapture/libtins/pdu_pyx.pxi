@@ -153,26 +153,28 @@ cdef class PDU(object):
                 return False
         return self.serialize() == (<PDU> other).serialize()
 
-    property header_size:
+    @property
+    def header_size(self):
         """
-        Returns the PDU's header size (read-only property)
+        PDU's header size getter ('int')
         """
-        def __get__(self):
-            return int(self.base_ptr.header_size())
+        return int(self.base_ptr.header_size())
 
-    property trailer_size:
+    @property
+    def trailer_size(self):
         """
-        Returns the PDU's trailer size (read-only property)
+        PDU's trailer size getter ('int')
         """
-        def __get__(self):
-            return int(self.base_ptr.trailer_size())
+        return int(self.base_ptr.trailer_size())
 
-    property size:
+
+    @property
+    def size(self):
         """
-        Returns the PDU's size (read-only property)
+        PDU's size getter ('int')
         """
-        def __get__(self):
-            return int(self.base_ptr.size())
+        return int(self.base_ptr.size())
+
 
     cpdef serialize(self):
         """

@@ -24,17 +24,28 @@ cdef class bpdu_id(object):
         ident: :py:class:`~.HWAddress`
         """
 
-    property priority:
-        def __get__(self):
-            return int(<uint8_t> self._priority)
+    @property
+    def priority(self):
+        '''
+        Priority field getter ('int')
+        '''
+        return int(<uint8_t> self._priority)
 
-    property ext_id:
-        def __get__(self):
-            return int(<uint16_t> self._ext_id)
 
-    property id:
-        def __get__(self):
-            return HWAddress(self._id.to_string())
+    @property
+    def ext_id(self):
+        '''
+        Ext id getter ('int')
+        '''
+        return int(<uint16_t> self._ext_id)
+
+    @property
+    def id(self):
+        '''
+        Id getter (:py:class:`~.HWAddress`)
+        '''
+        return HWAddress(self._id.to_string())
+
 
     def __hash__(self):
         return hash((self.priority, self.ext_id, <bytes> (self._id.to_string())))
@@ -99,119 +110,190 @@ cdef class STP(PDU):
         __init__()
         """
 
-    property proto_id:
+    @property
+    def proto_id(self):
         """
-        Protocol ID field (read-write, `uint16_t`)
+        Protocol ID field getter ('int')
         """
-        def __get__(self):
-            return int(self.ptr.proto_id())
-        def __set__(self, value):
-            self.ptr.proto_id(<uint16_t> int(value))
+        return int(self.ptr.proto_id())
 
-    property proto_version:
+    @proto_id.setter
+    def proto_id(self, value):
         """
-        Protocol Version field (read-write, `uint8_t`)
+        Protocol ID field setter ('int')
         """
-        def __get__(self):
-            return int(self.ptr.proto_version())
-        def __set__(self, value):
-            self.ptr.proto_version(<uint8_t> int(value))
+        self.ptr.proto_id(<uint16_t> int(value))
 
-    property bpdu_type:
-        """
-        BPDU Type field (read-write, `uint8_t`)
-        """
-        def __get__(self):
-            return int(self.ptr.bpdu_type())
-        def __set__(self, value):
-            self.ptr.bpdu_type(<uint8_t> int(value))
 
-    property bpdu_flags:
+    @property
+    def proto_version(self):
         """
-        BPDU Flags field (read-write, `uint8_t`)
+        Protocol Version field getter ('int')
         """
-        def __get__(self):
-            return int(self.ptr.bpdu_flags())
-        def __set__(self, value):
-            self.ptr.bpdu_flags(<uint8_t> int(value))
+        return int(self.ptr.proto_version())
 
-    property root_path_cost:
+    @proto_version.setter
+    def proto_version(self, value):
         """
-        Root Path Cost field (read-write, `uint32_t`)
+        Protocol Version field setter ('int')
         """
-        def __get__(self):
-            return int(self.ptr.root_path_cost())
-        def __set__(self, value):
-            self.ptr.root_path_cost(<uint32_t> int(value))
+        self.ptr.proto_version(<uint8_t> int(value))
 
-    property port_id:
-        """
-        Port ID field (read-write, `uint16_t`)
-        """
-        def __get__(self):
-            return int(self.ptr.port_id())
-        def __set__(self, value):
-            self.ptr.port_id(<uint16_t> int(value))
 
-    property msg_age:
+    @property
+    def bpdu_type(self):
         """
-        Message Age field (read-write, `uint16_t`)
+        BPDU Type field getter ('int')
         """
-        def __get__(self):
-            return int(self.ptr.msg_age())
-        def __set__(self, value):
-            self.ptr.msg_age(<uint16_t> int(value))
+        return int(self.ptr.bpdu_type())
+    @bpdu_type.setter
+    def bpdu_type(self, value):
+        """
+        BPDU Type field setter ('int')
+        """
+        self.ptr.bpdu_type(<uint8_t> int(value))
 
-    property max_age:
-        """
-        Maximum Age field (read-write, `uint16_t`)
-        """
-        def __get__(self):
-            return int(self.ptr.max_age())
-        def __set__(self, value):
-            self.ptr.max_age(<uint16_t> int(value))
 
-    property hello_time:
+    @property
+    def bpdu_flags(self):
         """
-        Hello Time field (read-write, `uint16_t`)
+        BPDU Flags field getter ('int')
         """
-        def __get__(self):
-            return int(self.ptr.hello_time())
-        def __set__(self, value):
-            self.ptr.hello_time(<uint16_t> int(value))
+        return int(self.ptr.bpdu_flags())
 
-    property fwd_delay:
+    @bpdu_flags.setter
+    def bpdu_flags(self, value):
         """
-        Forward Delay field (read-write, `uint16_t`)
+        BPDU Flags field setter ('int')
         """
-        def __get__(self):
-            return int(self.ptr.fwd_delay())
-        def __set__(self, value):
-            self.ptr.fwd_delay(<uint16_t> int(value))
+        self.ptr.bpdu_flags(<uint8_t> int(value))
 
-    property root_id:
-        """
-        Root ID field (read-write, :py:class:`~.bpdu_id`)
-        """
-        def __get__(self):
-            return bpdu_id.from_native(self.ptr.root_id())
-        def __set__(self, value):
-            if not isinstance(value, bpdu_id):
-                priority, ext_id, ident = value
-                value = bpdu_id(priority, ext_id, ident)
-            self.ptr.root_id((<bpdu_id> value).to_native())
 
-    property bridge_id:
+    @property
+    def root_path_cost(self):
         """
-        Bridge ID field (read-write, :py:class:`~.bpdu_id`)
+        Root Path Cost field getter ('int')
         """
-        def __get__(self):
-            return bpdu_id.from_native(self.ptr.bridge_id())
-        def __set__(self, value):
-            if not isinstance(value, bpdu_id):
-                priority, ext_id, ident = value
-                value = bpdu_id(priority, ext_id, ident)
-            self.ptr.bridge_id((<bpdu_id> value).to_native())
+        return int(self.ptr.root_path_cost())
+
+    @root_path_cost.setter
+    def root_path_cost(self, value):
+        """
+        Root Path Cost field setter ('int')
+        """
+        self.ptr.root_path_cost(<uint32_t> int(value))
+
+
+    @property
+    def port_id(self):
+        """
+        Port ID field getter ('int')
+        """
+        return int(self.ptr.port_id())
+
+    @port_id.setter
+    def port_id(self, value):
+        """
+        Port ID field setter ('int')
+        """
+        self.ptr.port_id(<uint16_t> int(value))
+
+
+    @property
+    def msg_age(self):
+        """
+        Message Age field getter ('int')
+        """
+        return int(self.ptr.msg_age())
+
+    @msg_age.setter
+    def msg_age(self, value):
+        """
+        Message Age field setter('int')
+        """
+        self.ptr.msg_age(<uint16_t> int(value))
+
+
+    @property
+    def max_age(self):
+        """
+        Maximum Age field getter ('int')
+        """
+        return int(self.ptr.max_age())
+
+    @max_age.setter
+    def max_age(self, value):
+        """
+        Maximum Age field setter ('int')
+        """
+        self.ptr.max_age(<uint16_t> int(value))
+
+
+    @property
+    def hello_time(self):
+        """
+        Hello Time field getter ('int')
+        """
+        return int(self.ptr.hello_time())
+
+    @hello_time.setter
+    def hello_time(self, value):
+        """
+        Hello Time field setter ('int')
+        """
+        self.ptr.hello_time(<uint16_t> int(value))
+
+
+    @property
+    def fwd_delay(self):
+        """
+        Forward Delay field getter ('int')
+        """
+        return int(self.ptr.fwd_delay())
+
+    @fwd_delay.setter
+    def fwd_delay(self, value):
+        """
+        Forward Delay field setter ('int')
+        """
+        self.ptr.fwd_delay(<uint16_t> int(value))
+
+
+    @property
+    def root_id(self):
+        """
+        Root ID field getter (:py:class:`~.bpdu_id`)
+        """
+        return bpdu_id.from_native(self.ptr.root_id())
+
+    @root_id.setter
+    def root_id(self, value):
+        """
+        Root ID field setter (:py:class:`~.bpdu_id`)
+        """
+        if not isinstance(value, bpdu_id):
+            priority, ext_id, ident = value
+            value = bpdu_id(priority, ext_id, ident)
+        self.ptr.root_id((<bpdu_id> value).to_native())
+
+
+    @property
+    def bridge_id(self):
+        """
+        Bridge ID field getter (:py:class:`~.bpdu_id`)
+        """
+        return bpdu_id.from_native(self.ptr.bridge_id())
+
+    @bridge_id
+    def bridge_id(self, value):
+        """
+        Bridge ID field setter (:py:class:`~.bpdu_id`)
+        """
+        if not isinstance(value, bpdu_id):
+            priority, ext_id, ident = value
+            value = bpdu_id(priority, ext_id, ident)
+        self.ptr.bridge_id((<bpdu_id> value).to_native())
+
 
     cdef cppPDU* replace_ptr_with_buf(self, uint8_t* buf, int size) except NULL:
         if self.ptr is not NULL and self.parent is None:

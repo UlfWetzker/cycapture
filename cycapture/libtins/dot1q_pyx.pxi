@@ -37,59 +37,91 @@ cdef class Dot1Q(PDU):
         """
 
 
-    property priority:
+    @property
+    def priority(self):
         """
-        Priority field (read-write, `uint8_t`)
+        Priority field getter (`uint8_t`)
         """
-        def __get__(self):
-            return int(<uint8_t> self.ptr.priority())
+        return int(<uint8_t> self.ptr.priority())
 
-        def __set__(self, value):
-            value = int(value)
-            self.ptr.priority(small_uint3(<uint8_t> value))
-
-    property cfi:
+    @priority.setter
+    def priority(self, value):
         """
-        Canonical Format Identifie field (read-write, `uint8_t`)
+        Priority field setter (`uint8_t`)
         """
-        def __get__(self):
-            return int(<uint8_t> self.ptr.cfi())
+        value = int(value)
+        self.ptr.priority(small_uint3(<uint8_t> value))
 
-        def __set__(self, value):
-            value = 1 if value else 0
-            self.ptr.cfi(small_uint1(<uint8_t> value))
 
-    property id:
+    @property
+    def cfi(self):
+        """
+        Canonical Format Identifie getter (`uint8_t`)
+        """
+        return int(<uint8_t> self.ptr.cfi())
+
+    @cfi.setter
+    def cfi(self, value):
+        """
+        Canonical Format Identifie field setter (`uint8_t`)
+        """
+        value = 1 if value else 0
+        self.ptr.cfi(small_uint1(<uint8_t> value))
+
+
+    @property
+    def id(self):
         """
         VLAN Id (read-write, `uint16_t`)
         """
-        def __get__(self):
-            return int(<uint16_t> self.ptr.id())
-        def __set__(self, value):
-            self.ptr.id(small_uint12(<uint16_t> int(value)))
+        return int(<uint16_t> self.ptr.id())
 
-    property payload_type:
+    @id.setter
+    def id(self, value):
         """
-        Payload type field (read-write, `uint16_t`)
+        VLAN Id (read-write, `uint16_t`)
         """
-        def __get__(self):
-            return int(self.ptr.payload_type())
-        def __set__(self, value):
-            self.ptr.payload_type(<uint16_t> int(value))
+        self.ptr.id(small_uint12(<uint16_t> int(value)))
 
-    property append_padding:
+
+    @property
+    def payload_type(self):
         """
-        Flag indicating whether the appropriate padding will be at the end of the packet (read-write, `bool`).
+        Payload type field getter (`uint16_t`)
+        """
+        return int(self.ptr.payload_type())
+
+    @payload_type.setter
+    def payload_type(self, value):
+        """
+        Payload type field setter (`uint16_t`)
+        """
+        self.ptr.payload_type(<uint16_t> int(value))
+
+
+    @property
+    def append_padding(self):
+        """
+        Getter for the flag that indicats whether the appropriate padding will be at the end of the packet (`bool`).
 
         The flag could be set to ``False`` when two or more contiguous Dot1Q
         PDUs are added to a packet. In that case, only the Dot1Q that is
         closer to the link layer should add a padding at the end.
         """
-        def __get__(self):
-            return bool(self.ptr.append_padding())
-        def __set__(self, value):
-            value = bool(value)
-            self.ptr.append_padding(<cpp_bool> value)
+        return bool(self.ptr.append_padding())
+
+    @append_padding.setter
+    def append_padding(self, value):
+        """
+        Setter for the flag that indicats whether the appropriate padding will be at the end of the packet (`bool`).
+
+        The flag could be set to ``False`` when two or more contiguous Dot1Q
+        PDUs are added to a packet. In that case, only the Dot1Q that is
+        closer to the link layer should add a padding at the end.
+        """
+        value = bool(value)
+        self.ptr.append_padding(<cpp_bool> value)
+
 
     cdef cppPDU* replace_ptr_with_buf(self, uint8_t* buf, int size) except NULL:
         if self.ptr is not NULL and self.parent is None:

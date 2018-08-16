@@ -129,19 +129,19 @@ cdef class IPv4Range(object):
         del self.ptr
         self.ptr = new cppIPv4Range(r)
 
-    property first:
+    @property
+    def first(self):
         """
-        The first address in range (read-only property)
+        Getter for the first address in range
         """
-        def __get__(self):
-            return IPv4Address(<bytes>(self.ptr.begin().ref().to_string()))
+        return IPv4Address(<bytes>(self.ptr.begin().ref().to_string()))
 
-    property last:
+    @property
+    def last(self):
         """
-        The last address in range (read-only property)
+        Getter for the last address in range
         """
-        def __get__(self):
-            return IPv4Address(<bytes>(self.ptr.end().ref().to_string()))
+        return IPv4Address(<bytes>(self.ptr.end().ref().to_string()))
 
     def __iter__(self):
         if not self.is_iterable():
@@ -265,19 +265,19 @@ cdef class IPv6Range(object):
         del self.ptr
         self.ptr = new cppIPv6Range(r)
 
-    property first:
+    @property
+    def first(self):
         """
-        First adddress in range (read-only property)
+        Getter for the first adddress in range
         """
-        def __get__(self):
-            return IPv6Address(<bytes>(self.ptr.begin().ref().to_string()))
+        return IPv6Address(<bytes>(self.ptr.begin().ref().to_string()))
 
-    property last:
+    @property
+    def last(self):
         """
-        Last address in range (read-only propperty)
+        Getter for the last address in range
         """
-        def __get__(self):
-            return IPv6Address(<bytes>(self.ptr.end().ref().to_string()))
+        return IPv6Address(<bytes>(self.ptr.end().ref().to_string()))
 
     def __iter__(self):
         if not self.is_iterable():
@@ -385,19 +385,19 @@ cdef class HWRange(object):
         del self.ptr
         self.ptr = new cppHWRange(r)
 
-    property first:
+    @property
+    def first(self):
         """
-        First address in range (read-only property)
+        Getter for the first address in range
         """
-        def __get__(self):
-            return HWAddress(<bytes>(self.ptr.begin().ref().to_string()))
+        return HWAddress(<bytes>(self.ptr.begin().ref().to_string()))
 
-    property last:
+    @property
+    def last(self):
         """
-        Last address in range (read-only property)
+        Getter for the last address in range
         """
-        def __get__(self):
-            return HWAddress(<bytes>(self.ptr.end().ref().to_string()))
+        return HWAddress(<bytes>(self.ptr.end().ref().to_string()))
 
     def __iter__(self):
         if not self.is_iterable():

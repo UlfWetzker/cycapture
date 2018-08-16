@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
 cdef class EAPOL(PDU):
-    """
+    '''
     EAPOL abstract class
-    """
+    '''
     pdu_flag = PDU.EAPOL
     pdu_type = PDU.EAPOL
 
@@ -40,29 +40,65 @@ cdef class EAPOL(PDU):
             raise MalformedPacket
         return PDU.from_ptr(p, parent=None)
 
-    property version:
-        def __get__(self):
-            return int((<cppEAPOL*> self.ptr).version())
-        def __set__(self, value):
-            (<cppEAPOL*> self.ptr).version(<uint8_t> int(value))
 
-    property packet_type:
-        def __get__(self):
-            return int((<cppEAPOL*> self.ptr).packet_type())
-        def __set__(self, value):
-            (<cppEAPOL*> self.ptr).packet_type(<uint8_t> int(value))
+    @property
+    def version(self):
+        '''
+        Version field getter ('int')
+        '''
+        return int((<cppEAPOL*> self.ptr).version())
 
-    property length:
-        def __get__(self):
-            return int((<cppEAPOL*> self.ptr).length())
-        def __set__(self, value):
-            (<cppEAPOL*> self.ptr).length(<uint16_t> int(value))
+    @version.setter
+    def version(self, value):
+        '''
+        Version field setter ('int')
+        '''
+        (<cppEAPOL*> self.ptr).version(<uint8_t> int(value))
 
-    property type:
-        def __get__(self):
-            return int((<cppEAPOL*> self.ptr).type())
-        def __set__(self, value):
-            (<cppEAPOL*> self.ptr).type(<uint8_t> int(value))
+
+    @property
+    def packet_type(self):
+        '''
+        Packet type getter ('int')
+        '''
+        return int((<cppEAPOL*> self.ptr).packet_type())
+
+    @packet_type.setter
+    def packet_type(self, value):
+        '''
+        Packet type setter ('int')
+        '''
+        (<cppEAPOL*> self.ptr).packet_type(<uint8_t> int(value))
+
+
+    @property
+    def length(self):
+        '''
+        Length field getter ('int')
+        '''
+        return int((<cppEAPOL*> self.ptr).length())
+
+    @length.setter
+    def length(self, value):
+        '''
+        Length field setter ('int')
+        '''
+        (<cppEAPOL*> self.ptr).length(<uint16_t> int(value))
+
+
+    @property
+    def type(self):
+        '''
+        Type field getter ('int')
+        '''
+        return int((<cppEAPOL*> self.ptr).type())
+
+    @type.setter
+    def type(self, value):
+        '''
+        Type field setter ('int')
+        '''
+        (<cppEAPOL*> self.ptr).type(<uint8_t> int(value))
 
 
 cdef class RC4EAPOL(EAPOL):
@@ -92,60 +128,120 @@ cdef class RC4EAPOL(EAPOL):
         __init__()
         """
 
-    property key_length:
-        def __get__(self):
-            return int((<cppRC4EAPOL*> self.ptr).key_length())
-        def __set__(self, value):
-            (<cppRC4EAPOL*> self.ptr).key_length(<uint16_t> int(value))
+    @property
+    def key_length(self):
+        '''
+        Key length getter ('int')
+        '''
+        return int((<cppRC4EAPOL*> self.ptr).key_length())
 
-    property replay_counter:
-        def __get__(self):
-            return int((<cppRC4EAPOL*> self.ptr).replay_counter())
-        def __set__(self, value):
-            (<cppRC4EAPOL*> self.ptr).replay_counter(<uint64_t> int(value))
+    @key_length.setter
+    def key_length(self, value):
+        '''
+        Key length setter ('int')
+        '''
+        (<cppRC4EAPOL*> self.ptr).key_length(<uint16_t> int(value))
 
-    property key_flag:
-        def __get__(self):
-            return bool(<uint8_t> ((<cppRC4EAPOL*> self.ptr).key_flag()))
-        def __set__(self, value):
-            cdef uint8_t v = 1 if value else 0
-            (<cppRC4EAPOL*> self.ptr).key_flag(small_uint1(v))
 
-    property key_index:
-        def __get__(self):
-            return int(<uint8_t> ((<cppRC4EAPOL*> self.ptr).key_index()))
-        def __set__(self, value):
-            (<cppRC4EAPOL*> self.ptr).key_index(small_uint7(<uint8_t>int(value)))
+    @property
+    def replay_counter(self):
+        '''
+        Replay counter getter ('int')
+        '''
+        return int((<cppRC4EAPOL*> self.ptr).replay_counter())
 
-    property key:
-        def __get__(self):
-            cdef vector[uint8_t] k = (<cppRC4EAPOL*> self.ptr).key()
-            return <bytes>((&(k[0]))[:k.size()])
+    @replay_counter.setter
+    def replay_counter(self, value):
+        '''
+        Relay counter setter ('int')
+        '''
+        (<cppRC4EAPOL*> self.ptr).replay_counter(<uint64_t> int(value))
 
-        def __set__(self, value):
-            value = bytes(value)
-            cdef uint8_t* p = <uint8_t*> (<bytes> value)
-            cdef vector[uint8_t] v
-            v.assign(p, p + len(value))
-            (<cppRC4EAPOL*> self.ptr).key(v)
 
-    property key_iv:
-        def __get__(self):
-            cdef uint8_t* p = <uint8_t*> ((<cppRC4EAPOL*> self.ptr).key_iv())
-            return <bytes> p[:RC4EAPOL.key_iv_size]
+    @property
+    def key_flag__get__(self):
+        '''
+        Key flag getter ('bool')
+        '''
+        return bool(<uint8_t> ((<cppRC4EAPOL*> self.ptr).key_flag()))
 
-        def __set__(self, value):
-            value = bytes(value)[:RC4EAPOL.key_iv_size].ljust(RC4EAPOL.key_iv_size, '\x00')
-            (<cppRC4EAPOL*> self.ptr).key_iv(<uint8_t*> (<bytes> value))
+    @key_flag.setter
+    def key_flag(self, value):
+        '''
+        Key Flag setter ('bool')
+        '''
+        cdef uint8_t v = 1 if value else 0
+        (<cppRC4EAPOL*> self.ptr).key_flag(small_uint1(v))
 
-    property key_sign:
-        def __get__(self):
-            cdef uint8_t* p = <uint8_t*> ((<cppRC4EAPOL*> self.ptr).key_sign())
-            return <bytes> p[:RC4EAPOL.key_sign_size]
 
-        def __set__(self, value):
-            value = bytes(value)[:RC4EAPOL.key_sign_size].ljust(RC4EAPOL.key_sign_size, '\x00')
-            (<cppRC4EAPOL*> self.ptr).key_sign(<uint8_t*> (<bytes> value))
+    @property
+    def key_index(self):
+        '''
+        Key index getter ('int')
+        '''
+        return int(<uint8_t> ((<cppRC4EAPOL*> self.ptr).key_index()))
+
+    @key_index.setter
+    def key_index(self, value):
+        '''
+        Key index setter ('int')
+        '''
+        (<cppRC4EAPOL*> self.ptr).key_index(small_uint7(<uint8_t>int(value)))
+
+
+    @property
+    def key(self):
+        '''
+        Key getter ('bytes')
+        '''
+        cdef vector[uint8_t] k = (<cppRC4EAPOL*> self.ptr).key()
+        return <bytes>((&(k[0]))[:k.size()])
+
+    @key.setter
+    def key(self, value):
+        '''
+        Key setter ('bytes')
+        '''
+        value = bytes(value)
+        cdef uint8_t* p = <uint8_t*> (<bytes> value)
+        cdef vector[uint8_t] v
+        v.assign(p, p + len(value))
+        (<cppRC4EAPOL*> self.ptr).key(v)
+
+
+    @property
+    def key_iv(self):
+        '''
+        Key IV getter ('bytes')
+        '''
+        cdef uint8_t* p = <uint8_t*> ((<cppRC4EAPOL*> self.ptr).key_iv())
+        return <bytes> p[:RC4EAPOL.key_iv_size]
+
+    @key_iv.setter
+    def key_iv(self, value):
+        '''
+        Key IV setter ('bytes')
+        '''
+        value = bytes(value)[:RC4EAPOL.key_iv_size].ljust(RC4EAPOL.key_iv_size, '\x00')
+        (<cppRC4EAPOL*> self.ptr).key_iv(<uint8_t*> (<bytes> value))
+
+
+    @property
+    def key_sign(self):
+        '''
+        Key sign getter ('bytes')
+        '''
+        cdef uint8_t* p = <uint8_t*> ((<cppRC4EAPOL*> self.ptr).key_sign())
+        return <bytes> p[:RC4EAPOL.key_sign_size]
+
+    @key_sign.setter
+    def key_sign(self, value):
+        '''
+        Key sign setter ('bytes')
+        '''
+        value = bytes(value)[:RC4EAPOL.key_sign_size].ljust(RC4EAPOL.key_sign_size, '\x00')
+        (<cppRC4EAPOL*> self.ptr).key_sign(<uint8_t*> (<bytes> value))
+
 
     cdef cppPDU* replace_ptr_with_buf(self, uint8_t* buf, int size) except NULL:
         if self.ptr is not NULL and self.parent is None:
@@ -189,140 +285,305 @@ cdef class RSNEAPOL(EAPOL):
         __init__()
         """
 
-    property key_length:
-        def __get__(self):
-            return int((<cppRSNEAPOL*> self.ptr).key_length())
-        def __set__(self, value):
-            (<cppRSNEAPOL*> self.ptr).key_length(<uint16_t> int(value))
+    @property
+    def key_length(self):
+        '''
+        Key length getter ('int')
+        '''
+        return int((<cppRSNEAPOL*> self.ptr).key_length())
 
-    property replay_counter:
-        def __get__(self):
-            return int((<cppRSNEAPOL*> self.ptr).replay_counter())
-        def __set__(self, value):
-            (<cppRSNEAPOL*> self.ptr).replay_counter(<uint64_t> int(value))
+    @key_length.setter
+    def key_length(self, value):
+        '''
+        Key length setter ('int')
+        '''
+        (<cppRSNEAPOL*> self.ptr).key_length(<uint16_t> int(value))
 
-    property wpa_length:
-        def __get__(self):
-            return int((<cppRSNEAPOL*> self.ptr).wpa_length())
-        def __set__(self, value):
-            (<cppRSNEAPOL*> self.ptr).wpa_length(<uint16_t> int(value))
 
-    property key_mic:
-        def __get__(self):
-            return bool(<uint8_t> ((<cppRSNEAPOL*> self.ptr).key_mic()))
-        def __set__(self, value):
-            (<cppRSNEAPOL*> self.ptr).key_mic(small_uint1(<uint8_t> bool(value)))
+    @property
+    def replay_counter__get__(self):
+        '''
+        Replay counter getter ('int')
+        '''
+        return int((<cppRSNEAPOL*> self.ptr).replay_counter())
 
-    property secure:
-        def __get__(self):
-            return bool(<uint8_t> ((<cppRSNEAPOL*> self.ptr).secure()))
-        def __set__(self, value):
-            (<cppRSNEAPOL*> self.ptr).secure(small_uint1(<uint8_t> bool(value)))
+    @replay_counter.setter
+    def replay_counter(self, value):
+        '''
+        Replay counter setter ('int')
+        '''
+        (<cppRSNEAPOL*> self.ptr).replay_counter(<uint64_t> int(value))
 
-    property error:
-        def __get__(self):
-            return bool(<uint8_t> ((<cppRSNEAPOL*> self.ptr).error()))
-        def __set__(self, value):
-            (<cppRSNEAPOL*> self.ptr).error(small_uint1(<uint8_t> bool(value)))
 
-    property request:
-        def __get__(self):
-            return bool(<uint8_t> ((<cppRSNEAPOL*> self.ptr).request()))
-        def __set__(self, value):
-            (<cppRSNEAPOL*> self.ptr).request(small_uint1(<uint8_t> bool(value)))
+    @property
+    def wpa_length(self):
+        '''
+        WPA length getter ('int')
+        '''
+        return int((<cppRSNEAPOL*> self.ptr).wpa_length())
 
-    property encrypted:
-        def __get__(self):
-            return bool(<uint8_t> ((<cppRSNEAPOL*> self.ptr).encrypted()))
-        def __set__(self, value):
-            (<cppRSNEAPOL*> self.ptr).encrypted(small_uint1(<uint8_t> bool(value)))
+    @wpa_length.setter
+    def wpa_length(self, value):
+        '''
+        WPA length setter ('int')
+        '''
+        (<cppRSNEAPOL*> self.ptr).wpa_length(<uint16_t> int(value))
 
-    property key_t:
-        def __get__(self):
-            return bool(<uint8_t> ((<cppRSNEAPOL*> self.ptr).key_t()))
-        def __set__(self, value):
-            (<cppRSNEAPOL*> self.ptr).key_t(small_uint1(<uint8_t> bool(value)))
 
-    property install:
-        def __get__(self):
-            return bool(<uint8_t> ((<cppRSNEAPOL*> self.ptr).install()))
-        def __set__(self, value):
-            (<cppRSNEAPOL*> self.ptr).install(small_uint1(<uint8_t> bool(value)))
+    @property
+    def key_mic(self):
+        '''
+        Key mic field getter ('bool')
+        '''
+        return bool(<uint8_t> ((<cppRSNEAPOL*> self.ptr).key_mic()))
 
-    property key_ack:
-        def __get__(self):
-            return bool(<uint8_t> ((<cppRSNEAPOL*> self.ptr).key_ack()))
-        def __set__(self, value):
-            (<cppRSNEAPOL*> self.ptr).key_ack(small_uint1(<uint8_t> bool(value)))
+    @key_mic.setter
+    def key_mic(self, value):
+        '''
+        Key mic field setter ('bool')
+        '''
+        (<cppRSNEAPOL*> self.ptr).key_mic(small_uint1(<uint8_t> bool(value)))
 
-    property key_descriptor:
-        def __get__(self):
-            return int(<uint8_t> ((<cppRSNEAPOL*> self.ptr).key_descriptor()))
-        def __set__(self, value):
-            (<cppRSNEAPOL*> self.ptr).key_descriptor(small_uint3(<uint8_t> int(value)))
 
-    property key_index:
-        def __get__(self):
-            return int(<uint8_t> ((<cppRSNEAPOL*> self.ptr).key_index()))
-        def __set__(self, value):
-            (<cppRSNEAPOL*> self.ptr).key_index(small_uint2(<uint8_t> int(value)))
+    @property
+    def secure(self):
+        '''
+        Secure field getter ('bool')
+        '''
+        return bool(<uint8_t> ((<cppRSNEAPOL*> self.ptr).secure()))
 
-    property key:
-        def __get__(self):
-            cdef vector[uint8_t] k = (<cppRSNEAPOL*> self.ptr).key()
-            return <bytes>((&(k[0]))[:k.size()])
+    @secure.setter
+    def secure(self, value):
+        '''
+        Secure field setter ('bool')
+        '''
+        (<cppRSNEAPOL*> self.ptr).secure(small_uint1(<uint8_t> bool(value)))
 
-        def __set__(self, value):
-            value = bytes(value)
-            cdef uint8_t* p = <uint8_t*> (<bytes> value)
-            cdef vector[uint8_t] v
-            v.assign(p, p + len(value))
-            (<cppRSNEAPOL*> self.ptr).key(v)
 
-    property key_iv:
-        def __get__(self):
-            cdef uint8_t* p = <uint8_t*> ((<cppRSNEAPOL*> self.ptr).key_iv())
-            return <bytes> p[:RSNEAPOL.key_iv_size]
+    @property
+    def error(self):
+        '''
+        Error field getter ('bool')
+        '''
+        return bool(<uint8_t> ((<cppRSNEAPOL*> self.ptr).error()))
 
-        def __set__(self, value):
-            value = bytes(value)[:RSNEAPOL.key_iv_size].ljust(RSNEAPOL.key_iv_size, '\x00')
-            (<cppRSNEAPOL*> self.ptr).key_iv(<uint8_t*> (<bytes> value))
+    @error.setter
+    def error(self, value):
+        '''
+        Error field setter ('bool')
+        '''
+        (<cppRSNEAPOL*> self.ptr).error(small_uint1(<uint8_t> bool(value)))
 
-    property nonce:
-        def __get__(self):
-            cdef uint8_t* p = <uint8_t*> ((<cppRSNEAPOL*> self.ptr).nonce())
-            return <bytes> p[:RSNEAPOL.nonce_size]
 
-        def __set__(self, value):
-            value = bytes(value)[:RSNEAPOL.nonce_size].ljust(RSNEAPOL.nonce_size, '\x00')
-            (<cppRSNEAPOL*> self.ptr).nonce(<uint8_t*> (<bytes> value))
+    @property
+    def request(self):
+        '''
+        REquest field getter ('bool')
+        '''
+        return bool(<uint8_t> ((<cppRSNEAPOL*> self.ptr).request()))
 
-    property rsc:
-        def __get__(self):
-            cdef uint8_t* p = <uint8_t*> ((<cppRSNEAPOL*> self.ptr).rsc())
-            return <bytes> p[:RSNEAPOL.rsc_size]
+    @request.setter
+    def request(self, value):
+        '''
+        Request field setter ('bool')
+        '''
+        (<cppRSNEAPOL*> self.ptr).request(small_uint1(<uint8_t> bool(value)))
 
-        def __set__(self, value):
-            value = bytes(value)[:RSNEAPOL.rsc_size].ljust(RSNEAPOL.rsc_size, '\x00')
-            (<cppRSNEAPOL*> self.ptr).rsc(<uint8_t*> (<bytes> value))
 
-    property id:
-        def __get__(self):
-            cdef uint8_t* p = <uint8_t*> ((<cppRSNEAPOL*> self.ptr).id())
-            return <bytes> p[:RSNEAPOL.id_size]
+    @property
+    def encrypted(self):
+        '''
+        Encrypted field getter ('bool')
+        '''
+        return bool(<uint8_t> ((<cppRSNEAPOL*> self.ptr).encrypted()))
 
-        def __set__(self, value):
-            value = bytes(value)[:RSNEAPOL.id_size].ljust(RSNEAPOL.id_size, '\x00')
-            (<cppRSNEAPOL*> self.ptr).id(<uint8_t*> (<bytes> value))
+    @encrypted.setter
+    def encrypted(self, value):
+        '''
+        Encrypted field setter ('bool')
+        '''
+        (<cppRSNEAPOL*> self.ptr).encrypted(small_uint1(<uint8_t> bool(value)))
 
-    property mic:
-        def __get__(self):
-            cdef uint8_t* p = <uint8_t*> ((<cppRSNEAPOL*> self.ptr).mic())
-            return <bytes> p[:RSNEAPOL.mic_size]
 
-        def __set__(self, value):
-            value = bytes(value)[:RSNEAPOL.mic_size].ljust(RSNEAPOL.mic_size, '\x00')
-            (<cppRSNEAPOL*> self.ptr).mic(<uint8_t*> (<bytes> value))
+    @property
+    def key_t(self):
+        '''
+        Key T getter ('bool')
+        '''
+        return bool(<uint8_t> ((<cppRSNEAPOL*> self.ptr).key_t()))
+
+    @key_t.setter
+    def key_t(self, value):
+        '''
+        Key T setter ('bool')
+        '''
+        (<cppRSNEAPOL*> self.ptr).key_t(small_uint1(<uint8_t> bool(value)))
+
+
+    @property
+    def install(self):
+        '''
+        Install field setter ('bool')
+        '''
+        return bool(<uint8_t> ((<cppRSNEAPOL*> self.ptr).install()))
+
+    @install.setter
+    def install(self, value):
+        '''
+        Install field setter ('bool')
+        '''
+        (<cppRSNEAPOL*> self.ptr).install(small_uint1(<uint8_t> bool(value)))
+
+
+    @property
+    def key_ack(self):
+        '''
+        Key ACK getter ('bool')
+        '''
+        return bool(<uint8_t> ((<cppRSNEAPOL*> self.ptr).key_ack()))
+
+    @key_ack.setter
+    def key_ack(self, value):
+        '''
+        Key ACK setter ('bool')
+        '''
+        (<cppRSNEAPOL*> self.ptr).key_ack(small_uint1(<uint8_t> bool(value)))
+
+
+    @property
+    def key_descriptor(self):
+        '''
+        Key descriptor getter ('int')
+        '''
+        return int(<uint8_t> ((<cppRSNEAPOL*> self.ptr).key_descriptor()))
+
+    @key_descriptor.setter
+    def key_descriptor(self, value):
+        '''
+        Key descriptor setter ('int')
+        '''
+        (<cppRSNEAPOL*> self.ptr).key_descriptor(small_uint3(<uint8_t> int(value)))
+
+
+    @property
+    def key_index(self):
+        '''
+        Key index getter ('int')
+        '''
+        return int(<uint8_t> ((<cppRSNEAPOL*> self.ptr).key_index()))
+
+    @key_index.setter
+    def key_index(self, value):
+        '''
+        Key index setter ('int')
+        '''
+        (<cppRSNEAPOL*> self.ptr).key_index(small_uint2(<uint8_t> int(value)))
+
+
+    @property
+    def key(self):
+        '''
+        Key getter ('bytes')
+        '''
+        cdef vector[uint8_t] k = (<cppRSNEAPOL*> self.ptr).key()
+        return <bytes>((&(k[0]))[:k.size()])
+
+    @key.setter
+    def key(self, value):
+        '''
+        Key setter ('bytes')
+        '''
+        value = bytes(value)
+        cdef uint8_t* p = <uint8_t*> (<bytes> value)
+        cdef vector[uint8_t] v
+        v.assign(p, p + len(value))
+        (<cppRSNEAPOL*> self.ptr).key(v)
+
+
+    @property
+    def key_iv(self):
+        '''
+        Key IV getter ('bytes')
+        '''
+        cdef uint8_t* p = <uint8_t*> ((<cppRSNEAPOL*> self.ptr).key_iv())
+        return <bytes> p[:RSNEAPOL.key_iv_size]
+
+    @key_iv.setter
+    def key_iv(self, value):
+        '''
+        Key IV setter ('bytes')
+        '''
+        value = bytes(value)[:RSNEAPOL.key_iv_size].ljust(RSNEAPOL.key_iv_size, '\x00')
+        (<cppRSNEAPOL*> self.ptr).key_iv(<uint8_t*> (<bytes> value))
+
+
+    @property
+    def nonce(self):
+        '''
+        NONCE getter ('bytes')
+        '''
+        cdef uint8_t* p = <uint8_t*> ((<cppRSNEAPOL*> self.ptr).nonce())
+        return <bytes> p[:RSNEAPOL.nonce_size]
+
+    @nonce.setter
+    def nonce(self, value):
+        '''
+        NONCE setter ('bytes')
+        '''
+        value = bytes(value)[:RSNEAPOL.nonce_size].ljust(RSNEAPOL.nonce_size, '\x00')
+        (<cppRSNEAPOL*> self.ptr).nonce(<uint8_t*> (<bytes> value))
+
+
+    @property
+    def rsc(self):
+        '''
+        RSC field getter ('bytes')
+        '''
+        cdef uint8_t* p = <uint8_t*> ((<cppRSNEAPOL*> self.ptr).rsc())
+        return <bytes> p[:RSNEAPOL.rsc_size]
+
+    @rsc.setter
+    def rsc(self, value):
+        '''
+        RSC field setter ('bytes')
+        '''
+        value = bytes(value)[:RSNEAPOL.rsc_size].ljust(RSNEAPOL.rsc_size, '\x00')
+        (<cppRSNEAPOL*> self.ptr).rsc(<uint8_t*> (<bytes> value))
+
+
+    @property
+    def id(self):
+        '''
+        ID field getter ('bytes')
+        '''
+        cdef uint8_t* p = <uint8_t*> ((<cppRSNEAPOL*> self.ptr).id())
+        return <bytes> p[:RSNEAPOL.id_size]
+
+    @id.setter
+    def id(self, value):
+        '''
+        ID field setter ('bytes')
+        '''
+        value = bytes(value)[:RSNEAPOL.id_size].ljust(RSNEAPOL.id_size, '\x00')
+        (<cppRSNEAPOL*> self.ptr).id(<uint8_t*> (<bytes> value))
+
+
+    @property
+    def mic(self):
+        '''
+        MIC field getter ('bytes')
+        '''
+        cdef uint8_t* p = <uint8_t*> ((<cppRSNEAPOL*> self.ptr).mic())
+        return <bytes> p[:RSNEAPOL.mic_size]
+
+    @mic.setter
+    def mic(self, value):
+        '''
+        MIC field setter ('bytes')
+        '''
+        value = bytes(value)[:RSNEAPOL.mic_size].ljust(RSNEAPOL.mic_size, '\x00')
+        (<cppRSNEAPOL*> self.ptr).mic(<uint8_t*> (<bytes> value))
+
 
     cdef cppPDU* replace_ptr_with_buf(self, uint8_t* buf, int size) except NULL:
         if self.ptr is not NULL and self.parent is None:

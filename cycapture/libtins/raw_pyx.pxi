@@ -47,22 +47,26 @@ cdef class RAW(PDU):
         self.ptr = NULL
         self.parent = None
 
-    property payload:
+    @property
+    def payload(self):
         """
-        The payload (read-write, `bytes`)
+        The payload getter ('bytes')
         """
-        def __get__(self):
-            cdef const uint8_t* buf = &(self.ptr.payload()[0])
-            cdef int size = self.ptr.payload().size()
-            return <bytes>(buf[:size])
+        cdef const uint8_t* buf = &(self.ptr.payload()[0])
+        cdef int size = self.ptr.payload().size()
+        return <bytes>(buf[:size])
 
-        def __set__(self, value):
-            if not isinstance(value, bytes):
-                value = bytes(value)
-            cdef uint8_t* buf = <uint8_t*> (<bytes>value)
-            cdef vector[uint8_t] v
-            v.assign(buf, buf + len(value))
-            self.ptr.payload(v)
+    @payload.setter
+    def payload(self, value):
+        """
+        The payload setter ('bytes')
+        """
+        if not isinstance(value, bytes):
+            value = bytes(value)
+        cdef uint8_t* buf = <uint8_t*> (<bytes>value)
+        cdef vector[uint8_t] v
+        v.assign(buf, buf + len(value))
+        self.ptr.payload(v)
 
     cpdef to(self, pdu_class):
         """
@@ -90,12 +94,12 @@ cdef class RAW(PDU):
         (<PDU> obj).parent = None
         return obj
 
-    property payload_size:
+    @property
+    def payload_size(self):
         """
-        The payload size (read-only)
+        The payload size getter ('int')
         """
-        def __get__(self):
-            return int(self.ptr.payload_size())
+        return int(self.ptr.payload_size())
 
     cdef equals(self, other):
         if not isinstance(other, PDU):

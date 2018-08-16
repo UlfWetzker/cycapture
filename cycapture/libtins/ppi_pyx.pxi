@@ -23,33 +23,38 @@ cdef class PPI(PDU):
     def __init__(self):
         raise ValueError("can't instantiate a PPI PDU")
 
-    property version:
-        """
-        Version field (read-only)
-        """
-        def __get__(self):
-            return int(self.ptr.version())
 
-    property flags:
+    @property
+    def version(self):
         """
-        Flags field (read-only)
+        Version field getter ('int')
         """
-        def __get__(self):
-            return int(self.ptr.flags())
+        return int(self.ptr.version())
 
-    property length:
-        """
-        Length field (read-only)
-        """
-        def __get__(self):
-            return int(self.ptr.length())
 
-    property dlt:
+    @property
+    def flags(self):
         """
-        Data Link Type field (read-only)
+        Flags field getter ('int')
         """
-        def __get__(self):
-            return int(self.ptr.dlt())
+        return int(self.ptr.flags())
+
+
+    @property
+    def length(self):
+        """
+        Length field getter ('int')
+        """
+        return int(self.ptr.length())
+
+
+    @property
+    def dlt(self):
+        """
+        Data Link Type field getter ('int')
+        """
+        return int(self.ptr.dlt())
+
 
     cpdef serialize(self):
         raise NotImplementedError

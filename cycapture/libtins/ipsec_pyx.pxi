@@ -28,56 +28,87 @@ cdef class IPSecAH(PDU):
         The ICV field is initialized with four 0 bytes. The length field is initialized appropriately.
         """
 
-    property next_header:
-        """
-        Next header field (read-write, `uint8_t`)
-        """
-        def __get__(self):
-            return int(self.ptr.next_header())
-        def __set__(self, value):
-            self.ptr.next_header(<uint8_t> int(value))
 
-    property length:
+    @property 
+    def next_header(self):
         """
-        Length field (read-write, `uint8_t`)
+        Next header field getter ('int')
         """
-        def __get__(self):
-            return int(self.ptr.length())
-        def __set__(self, value):
-            self.ptr.length(<uint8_t> int(value))
+        return int(self.ptr.next_header())
 
-    property spi:
+    @next_header.setter
+    def next_header(self, value):
         """
-        Security Parameters Index field (read-write, `uint32_t`)
+        Next header field setter ('int')
         """
-        def __get__(self):
-            return int(self.ptr.spi())
-        def __set__(self, value):
-            self.ptr.spi(<uint32_t> int(value))
+        self.ptr.next_header(<uint8_t> int(value))
 
-    property seq_number:
-        """
-        Sequence number field (read-write, `uint32_t`)
-        """
-        def __get__(self):
-            return int(self.ptr.seq_number())
-        def __set__(self, value):
-            self.ptr.seq_number(<uint32_t> int(value))
 
-    property icv:
+    @property
+    def length(self):
         """
-        ICV field (read-write, `bytes`)
+        Length field getter ('int')
         """
-        def __get__(self):
-            cdef vector[uint8_t] v = self.ptr.icv()
-            cdef uint8_t* p = &v[0]
-            return <bytes> (p[:v.size()])
-        def __set__(self, value):
-            value = bytes(value)
-            cdef uint8_t* p = <uint8_t*> value
-            cdef vector[uint8_t] v
-            v.assign(p, p + len(value))
-            self.ptr.icv(v)
+        return int(self.ptr.length())
+
+    @length.setter
+    def length(self, value):
+        """
+        Length field setter ('int')
+        """
+        self.ptr.length(<uint8_t> int(value))
+
+
+    @property
+    def spi(self):
+        """
+        Security Parameters Index field getter ('int')
+        """
+        return int(self.ptr.spi())
+
+    @spi.setter
+    def spi(self, value):
+        """
+        Security Parameters Index field setter ('int')
+        """
+        self.ptr.spi(<uint32_t> int(value))
+
+
+    @property
+    def seq_number(self):
+        """
+        Sequence number field getter ('int')
+        """
+        return int(self.ptr.seq_number())
+
+    @seq_number.setter
+    def seq_number(self, value):
+        """
+        Sequence number field setter ('int')
+        """
+        self.ptr.seq_number(<uint32_t> int(value))
+
+
+    @property
+    def icv(self):
+        """
+        ICV field getter ('bytes')
+        """
+        cdef vector[uint8_t] v = self.ptr.icv()
+        cdef uint8_t* p = &v[0]
+        return <bytes> (p[:v.size()])
+
+    @icv.setter
+    def icv(self, value):
+        """
+        ICV field setter ('bytes')
+        """
+        value = bytes(value)
+        cdef uint8_t* p = <uint8_t*> value
+        cdef vector[uint8_t] v
+        v.assign(p, p + len(value))
+        self.ptr.icv(v)
+
 
     cdef cppPDU* replace_ptr_with_buf(self, uint8_t* buf, int size) except NULL:
         if self.ptr is not NULL and self.parent is None:
@@ -117,23 +148,35 @@ cdef class IPSecESP(PDU):
         __init__()
         """
 
-    property spi:
+    @property
+    def spi(self):
         """
-        Security Parameters Index field (read-write, `uint32_t`)
+        Security Parameters Index field getter ('int')
         """
-        def __get__(self):
-            return int(self.ptr.spi())
-        def __set__(self, value):
-            self.ptr.spi(<uint32_t> int(value))
+        return int(self.ptr.spi())
 
-    property seq_number:
+    @spi.setter
+    def spi(self, value):
         """
-        Sequence number field (read-write, `uint32_t`)
+        Security Parameters Index field setter ('int')
         """
-        def __get__(self):
-            return int(self.ptr.seq_number())
-        def __set__(self, value):
-            self.ptr.seq_number(<uint32_t> int(value))
+        self.ptr.spi(<uint32_t> int(value))
+
+
+    @property
+    def seq_number(self):
+        """
+        Sequence number field getter ('int')
+        """
+        return int(self.ptr.seq_number())
+
+    @seq_number.setter
+    def seq_number(self, value):
+        """
+        Sequence number field setter ('int')
+        """
+        self.ptr.seq_number(<uint32_t> int(value))
+
 
     cdef cppPDU* replace_ptr_with_buf(self, uint8_t* buf, int size) except NULL:
         if self.ptr is not NULL and self.parent is None:

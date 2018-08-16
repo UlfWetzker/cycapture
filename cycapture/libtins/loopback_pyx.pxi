@@ -36,14 +36,21 @@ cdef class Loopback(PDU):
             raise ValueError("iface can't be None")
         self.ptr.send((<PacketSender> sender).ptr[0], (<NetworkInterface> iface).interface)
 
-    property family:
+
+    @property
+    def family(self):
         """
-        family identifier (read-write, `uint32_t`)
+        family identifier getter ('int')
         """
-        def __get__(self):
-            return int(self.ptr.family())
-        def __set__(self, value):
-            self.ptr.family(<uint32_t> int(value))
+        return int(self.ptr.family())
+
+    @family.setter 
+    def family(self, value):
+        """
+        family identifier setter ('int')
+        """
+        self.ptr.family(<uint32_t> int(value))
+
 
     cdef cppPDU* replace_ptr_with_buf(self, uint8_t* buf, int size) except NULL:
         if self.ptr is not NULL and self.parent is None:

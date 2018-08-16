@@ -28,51 +28,81 @@ cdef class SLL(PDU):
         __init__()
         """
 
-    property packet_type:
+    @property
+    def packet_type(self):
         """
-        Packet Type field (read-write, `uint16_t`)
+        Packet Type field getter ('int')
         """
-        def __get__(self):
-            return int(self.ptr.packet_type())
-        def __set__(self, value):
-            self.ptr.packet_type(<uint16_t> int(value))
+        return int(self.ptr.packet_type())
 
-    property lladdr_type:
+    @packet_type.setter
+    def packet_type(self, value):
         """
-        LLADDR Type field (read-write, `uint16_t`)
+        Packet Type field setter ('int')
         """
-        def __get__(self):
-            return int(self.ptr.lladdr_type())
-        def __set__(self, value):
-            self.ptr.lladdr_type(<uint16_t> int(value))
+        self.ptr.packet_type(<uint16_t> int(value))
 
-    property lladdr_len:
-        """
-        LLADDR Length field (read-write, `uint16_t`)
-        """
-        def __get__(self):
-            return int(self.ptr.lladdr_len())
-        def __set__(self, value):
-            self.ptr.lladdr_len(<uint16_t> int(value))
 
-    property protocol:
+    @property
+    def lladdr_type(self):
         """
-        Protocol field (read-write, `uint16_t`)
+        LLADDR Type field getter ('int')
         """
-        def __get__(self):
-            return int(self.ptr.protocol())
-        def __set__(self, value):
-            self.ptr.protocol(<uint16_t> int(value))
+        return int(self.ptr.lladdr_type())
 
-    property address:
+    @lladdr_type.setter
+    def lladdr_type(self, value):
         """
-        Address field (read-write, `bytes` like ``b"00:01:02:03:04:05:06:07"``)
+        LLADDR Type field setter ('int')
         """
-        def __get__(self):
-            return <bytes> (self.ptr.address().to_string())
-        def __set__(self, value):
-            cdef string v = bytes(value)
-            self.ptr.address(cppHWAddress8(v))
+        self.ptr.lladdr_type(<uint16_t> int(value))
+
+
+    @property
+    def lladdr_len(self):
+        """
+        LLADDR Length field getter ('int')
+        """
+        return int(self.ptr.lladdr_len())
+
+    @lladdr_len.setter
+    def lladdr_len(self, value):
+        """
+        LLADDR Length field setter ('int')
+        """
+        self.ptr.lladdr_len(<uint16_t> int(value))
+
+
+    @property
+    def protocol(self):
+        """
+        Protocol field getter ('int')
+        """
+        return int(self.ptr.protocol())
+
+    @protocol.setter
+    def protocol(self, value):
+        """
+        Protocol field setter ('int')
+        """
+        self.ptr.protocol(<uint16_t> int(value))
+
+
+    @property
+    def address(self):
+        """
+        Address field getter ('bytes' like ``b"00:01:02:03:04:05:06:07"``)
+        """
+        return <bytes> (self.ptr.address().to_string())
+
+    @address.setter
+    def address(self, value):
+        """
+        Address field ('bytes' like ``b"00:01:02:03:04:05:06:07"``)
+        """
+        cdef string v = bytes(value)
+        self.ptr.address(cppHWAddress8(v))
+
 
     cdef cppPDU* replace_ptr_with_buf(self, uint8_t* buf, int size) except NULL:
         if self.ptr is not NULL and self.parent is None:

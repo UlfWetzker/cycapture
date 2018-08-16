@@ -31,163 +31,250 @@ cdef class BootP(PDU):
         __init__()
         """
 
-    property opcode:
+    @property
+    def opcode(self):
         """
-        OpCode field (read-write, `uint8_t`)
+        OpCode field getter (`int`)
         """
-        def __get__(self):
-            return int(self.ptr.opcode())
-        def __set__(self, value):
-            self.ptr.opcode(<uint8_t> int(value))
+        return int(self.ptr.opcode())
 
-    property htype:
+    @opcode.setter
+    def opcode(self, value):
         """
-        htype field (read-write, `uint8_t`)
+        OpCode field setter (uint8_t`)
         """
-        def __get__(self):
-            return int(self.ptr.htype())
-        def __set__(self, value):
-            self.ptr.htype(<uint8_t> int(value))
+        self.ptr.opcode(<uint8_t> int(value))
 
-    property hlen:
-        """
-        hlen field (read-write, `uint8_t`)
-        """
-        def __get__(self):
-            return int(self.ptr.hlen())
-        def __set__(self, value):
-            self.ptr.hlen(<uint8_t> int(value))
 
-    property hops:
+    @property
+    def htype(self):
         """
-        hops field (read-write, `uint8_t`)
+        htype field getter (`int`)
         """
-        def __get__(self):
-            return int(self.ptr.hops())
-        def __set__(self, value):
-            self.ptr.hops(<uint8_t> int(value))
+        return int(self.ptr.htype())
 
-    property xid:
+    @htype.setter
+    def htype(self, value):
         """
-        xid field (read-write, `uint32_t`)
+        htype field setter (`uint8_t`)
         """
-        def __get__(self):
-            return int(self.ptr.xid())
-        def __set__(self, value):
-            self.ptr.xid(<uint32_t> int(value))
+        self.ptr.htype(<uint8_t> int(value))
 
-    property secs:
-        """
-        secs field (read-write, `uint16_t`)
-        """
-        def __get__(self):
-            return int(self.ptr.secs())
-        def __set__(self, value):
-            self.ptr.secs(<uint16_t> int(value))
 
-    property padding:
+    @property
+    def hlen(self):
         """
-        padding field (read-write, `uint16_t`)
+        hlen field getter (`int`)
         """
-        def __get__(self):
-            return int(self.ptr.padding())
-        def __set__(self, value):
-            self.ptr.padding(<uint16_t> int(value))
+        return int(self.ptr.hlen())
 
-    property ciaddr:
+    @hlen.setter
+    def hlen(self, value):
         """
-        ciaddr field (read-write, :py:class:`~.IPv4Address`)
+        hlen field setter (`uint8_t`)
         """
-        def __get__(self):
-            return IPv4Address(<bytes> (self.ptr.ciaddr().to_string()))
-        def __set__(self, value):
-            if not isinstance(value, IPv4Address):
-                value = IPv4Address(value)
-            self.ptr.ciaddr((<IPv4Address> value).ptr[0])
+        self.ptr.hlen(<uint8_t> int(value))
 
-    property yiaddr:
-        """
-        yiaddr field (read-write, :py:class:`~.IPv4Address`)
-        """
-        def __get__(self):
-            return IPv4Address(<bytes> (self.ptr.yiaddr().to_string()))
-        def __set__(self, value):
-            if not isinstance(value, IPv4Address):
-                value = IPv4Address(value)
-            self.ptr.yiaddr((<IPv4Address> value).ptr[0])
 
-    property siaddr:
+    @property
+    def hops(self):
         """
-        siaddr field (read-write, :py:class:`~.IPv4Address`)
+        hops field getter (`int`)
         """
-        def __get__(self):
-            return IPv4Address(<bytes> (self.ptr.siaddr().to_string()))
-        def __set__(self, value):
-            if not isinstance(value, IPv4Address):
-                value = IPv4Address(value)
-            self.ptr.siaddr((<IPv4Address> value).ptr[0])
+        return int(self.ptr.hops())
 
-    property giaddr:
+    @hops.setter
+    def hops(self, value):
         """
-        giaddr field (read-write, :py:class:`~.IPv4Address`)
+        hops field setter (`uint8_t`)
         """
-        def __get__(self):
-            return IPv4Address(<bytes> (self.ptr.giaddr().to_string()))
-        def __set__(self, value):
-            if not isinstance(value, IPv4Address):
-                value = IPv4Address(value)
-            self.ptr.giaddr((<IPv4Address> value).ptr[0])
+        self.ptr.hops(<uint8_t> int(value))
 
-    property chaddr:
+    
+    @property
+    def xid(self):
         """
-        chaddr field (read-write, `bytes` like ``b"00:01:02:03:04:05:06:07:08:09:10:11:12:13:14:ff"``)
+        xid field getter (`int`)
         """
+        return int(self.ptr.xid())
 
-        def __get__(self):
-            return <bytes> (self.ptr.chaddr().to_string())
-        def __set__(self, value):
-            l = bytes(value).split(':')
-            if len(l) > 16:
-                raise ValueError
-            if any([int(s, 16) > 255 for s in l]):
-                raise ValueError
-            value = ":".join([s.zfill(2) for s in l])
-            bootp_set_chaddr(self.ptr[0], cppHWAddress16(<string> value))
+    @xid.setter
+    def xid(self, value):
+        """
+        xid field (`uint32_t`)
+        """
+        self.ptr.xid(<uint32_t> int(value))
 
-    property sname:
+    
+    @property
+    def secs(self):
         """
-        sname field (read-write, `bytes` with length <= 64)
+        secs field getter (`int`)
         """
-        def __get__(self):
-            return <bytes> (self.ptr.sname()[:64])
-        def __set__(self, value):
-            value = (bytes(value)[:64]).ljust(64, '\x00')
-            self.ptr.sname(<uint8_t*> value)
+        return int(self.ptr.secs())
 
-    property file:
+    @secs.setter
+    def secs(self, value):
         """
-        file field (read-write, `bytes` with length <= 128)
+        secs field setter (`uint16_t`)
         """
-        def __get__(self):
-            return <bytes> (self.ptr.file()[:128])
-        def __set__(self, value):
-            value = (bytes(value)[:128]).ljust(128, '\x00')
-            self.ptr.file(<uint8_t*> value)
+        self.ptr.secs(<uint16_t> int(value))
 
-    property vend:
-        """
-        vend field (read-write, `bytes`)
-        """
-        def __get__(self):
-            cdef vector[uint8_t] v = <vector[uint8_t]> ((<const cppBootP*> self.ptr).vend())
-            return <bytes> ((&(v[0]))[:v.size()])
 
-        def __set__(self, value):
-            value = bytes(value)
-            cdef string s = value
-            cdef vector[uint8_t] v
-            v.assign(s.c_str(), s.c_str() + s.size())
-            self.ptr.vend(v)
+    @property
+    def passing(self):
+        """
+        padding field getter (`int`)
+        """
+        return int(self.ptr.padding())
+
+    @padding.setter
+    def padding(self, value):
+        """
+        padding field setter (`uint16_t`)
+        """
+        self.ptr.padding(<uint16_t> int(value))
+
+    
+    @property
+    def ciaddr(self):
+        """
+        ciaddr field  getter (:py:class:`~.IPv4Address`)
+        """
+        return IPv4Address(<bytes> (self.ptr.ciaddr().to_string()))
+
+    @ciaddr.setter
+    def ciaddr(self, value):
+        """
+        ciaddr field setter (:py:class:`~.IPv4Address`)
+        """
+        if not isinstance(value, IPv4Address):
+            value = IPv4Address(value)
+        self.ptr.ciaddr((<IPv4Address> value).ptr[0])
+
+    @property
+    def yiaddr(self):
+        """
+        yiaddr field getter (:py:class:`~.IPv4Address`)
+        """
+        return IPv4Address(<bytes> (self.ptr.yiaddr().to_string()))
+
+    @yiaddr.setter
+    def yiaddr(self, value):
+        """
+        yiaddr field setter (:py:class:`~.IPv4Address`)
+        """
+        if not isinstance(value, IPv4Address):
+            value = IPv4Address(value)
+        self.ptr.yiaddr((<IPv4Address> value).ptr[0])
+
+    
+    @property
+    def siaddr(self):
+        """
+        siaddr field getter (:py:class:`~.IPv4Address`)
+        """
+        return IPv4Address(<bytes> (self.ptr.siaddr().to_string()))
+
+    @siaddr.setter
+    def siaddr(self, value):
+        """
+        siaddr field setter (:py:class:`~.IPv4Address`)
+        """
+        if not isinstance(value, IPv4Address):
+            value = IPv4Address(value)
+        self.ptr.siaddr((<IPv4Address> value).ptr[0])
+
+    
+    @property
+    def giaddr(self):
+        """
+        giaddr field getter (:py:class:`~.IPv4Address`)
+        """
+        return IPv4Address(<bytes> (self.ptr.giaddr().to_string()))
+
+    @giaddr.setter
+    def giaddr(self, value):
+        """
+        giaddr field setter (:py:class:`~.IPv4Address`)
+        """
+        if not isinstance(value, IPv4Address):
+            value = IPv4Address(value)
+        self.ptr.giaddr((<IPv4Address> value).ptr[0])
+
+
+    @property
+    def chaddr(self):
+        """
+        chaddr field getter (`bytes` like ``b"00:01:02:03:04:05:06:07:08:09:10:11:12:13:14:ff"``)
+        """
+        return <bytes> (self.ptr.chaddr().to_string())
+
+    @chaddr.setter
+    def chaddr(self, value):
+        """
+        chaddr field setter (`bytes` like ``b"00:01:02:03:04:05:06:07:08:09:10:11:12:13:14:ff"``)
+        """
+        l = bytes(value).split(':')
+        if len(l) > 16:
+            raise ValueError
+        if any([int(s, 16) > 255 for s in l]):
+            raise ValueError
+        value = ":".join([s.zfill(2) for s in l])
+        bootp_set_chaddr(self.ptr[0], cppHWAddress16(<string> value))
+
+
+    @property
+    def sname(self):
+        """
+        sname field getter (`bytes` with length <= 64)
+        """
+        return <bytes> (self.ptr.sname()[:64])
+
+    @sname.setter
+    def sname(self, value):
+        """
+        sname field setter (`bytes` with length <= 64)
+        """
+        value = (bytes(value)[:64]).ljust(64, '\x00')
+        self.ptr.sname(<uint8_t*> value)
+
+
+    @property
+    def file(self):
+        """
+        file field getter (`bytes` with length <= 128)
+        """
+        return <bytes> (self.ptr.file()[:128])
+
+    @file.setter
+    def file(self, value):
+        """
+        file field setter (`bytes` with length <= 128)
+        """
+        value = (bytes(value)[:128]).ljust(128, '\x00')
+        self.ptr.file(<uint8_t*> value)
+
+
+    @property
+    def vend(self):
+        """
+        vend field getter (`bytes`)
+        """
+        cdef vector[uint8_t] v = <vector[uint8_t]> ((<const cppBootP*> self.ptr).vend())
+        return <bytes> ((&(v[0]))[:v.size()])
+
+    @vend.setter
+    def vend(self, value):
+        """
+        vend field setter (`bytes`)
+        """
+        value = bytes(value)
+        cdef string s = value
+        cdef vector[uint8_t] v
+        v.assign(s.c_str(), s.c_str() + s.size())
+        self.ptr.vend(v)
+
 
     cdef cppPDU* replace_ptr_with_buf(self, uint8_t* buf, int size) except NULL:
         if self.ptr is not NULL and self.parent is None:

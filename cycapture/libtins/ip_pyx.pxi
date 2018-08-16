@@ -43,33 +43,38 @@ cdef class IPSecurityType(object):
     cdef from_cpp(cppIP.security_type native):
         return IPSecurityType(native.security, native.compartments, native.handling_restrictions, <uint32_t> native.transmission_control)
 
-    property security:
-        """
-        `security` getter
-        """
-        def __get__(self):
-            return int(self._security)
 
-    property compartments:
+    @property
+    def security(self):
         """
-        `compartments` getter
+        Security field getter ('int')
         """
-        def __get__(self):
-            return int(self._compartments)
+        return int(self._security)
 
-    property handling_restrictions:
-        """
-        `handling_restrictions` getter
-        """
-        def __get__(self):
-            return int(self._handling_restrictions)
 
-    property transmission_control:
+    @property
+    def compartments(self):
         """
-        `transmission_control` getter
+        Compartments field getter ('int')
         """
-        def __get__(self):
-            return int(<uint32_t> self._transmission_control)
+        return int(self._compartments)
+
+
+    @property
+    def handling_restrictions(self):
+        """
+        Handling_restrictions field getter ('int')
+        """
+        return int(self._handling_restrictions)
+
+
+    @property
+    def transmission_control(self):
+        """
+        Transmission_control field getter ('int')
+        """
+        return int(<uint32_t> self._transmission_control)
+
 
     def __richcmp__(self, other, op):
         if op == 2:
@@ -128,26 +133,30 @@ cdef class IPOptionIdentifier(object):
     cdef from_cpp(cppIP.option_identifier native):
         return IPOptionIdentifier(native.number, native.op_class, native.copied)
 
-    property number:
-        """
-        `number` getter
-        """
-        def __get__(self):
-            return int(self._number)
 
-    property op_class:
+    @property
+    def number(self):
         """
-        `op_class` getter
+        Number field getter ('int')
         """
-        def __get__(self):
-            return int(self._op_class)
+        return int(self._number)
 
-    property copied:
+
+    @property
+    def op_class(self):
         """
-        `copied` getter
+        Op_class field getter ('int')
         """
-        def __get__(self):
-            return int(self._copied)
+        return int(self._op_class)
+
+
+    @property
+    def copied(self):
+        """
+        Copied field getter ('int')
+        """
+        return int(self._copied)
+
 
     def __richcmp__(self, other, op):
         if op == 2:
@@ -249,133 +258,191 @@ cdef class IP(PDU):
         """
         self.ptr.noop()
 
-    property head_len:
-        """
-        the header length field (read-only)
-        """
-        def __get__(self):
-            return <uint8_t> self.ptr.head_len()
 
-    property tos:
+    @property
+    def head_len(self):
         """
-        the type of service field (``uint8_t``, read-write)
+        Header length field getter ('int')
         """
-        def __get__(self):
-            return <uint8_t> self.ptr.tos()
-        def __set__(self, value):
-            cdef uint8_t v = <uint8_t> int(value)
-            self.ptr.tos(v)
+        return <uint8_t> self.ptr.head_len()
 
-    property tot_len:
-        """
-        the total length field (``uint16_t``, read-write)
-        """
-        def __get__(self):
-            return <uint16_t> self.ptr.tot_len()
 
-    property id:
+    @property
+    def tos(self):
         """
-        the id field (``uint16_t``, read-write)
+        Type Of Service field getter ('int')
         """
-        def __get__(self):
-            return <uint16_t> self.ptr.ident()
-        def __set__(self, value):
-            cdef uint16_t v = <uint16_t> int(value)
-            self.ptr.ident(v)
+        return <uint8_t> self.ptr.tos()
+    
+    @tos.setter
+    def tos(self, value):
+        """
+        Type Of Service field setter ('int')
+        """
+        cdef uint8_t v = <uint8_t> int(value)
+        self.ptr.tos(v)
 
-    property frag_off:
-        """
-        the fragment offset field (``uint16_t``, read-write)
-        """
-        def __get__(self):
-            return <uint16_t> self.ptr.frag_off()
-        def __set__(self, value):
-            cdef uint16_t v = <uint16_t> int(value)
-            self.ptr.frag_off(v)
 
-    property ttl:
+    @property
+    def tot_len(self):
         """
-        the time to live field (``uint8_t``, read-write)
+        Total length field ('int')
         """
-        def __get__(self):
-            return <uint8_t> self.ptr.ttl()
-        def __set__(self, value):
-            cdef uint8_t v = <uint8_t> int(value)
-            self.ptr.ttl(v)
+        return <uint16_t> self.ptr.tot_len()
 
-    property protocol:
-        """
-        the protocol field (``uint8_t``, read-write)
-        """
-        def __get__(self):
-            return <uint8_t> self.ptr.protocol()
-        def __set__(self, value):
-            cdef uint8_t v = <uint8_t> int(value)
-            self.ptr.protocol(v)
 
-    property checksum:
+    @property
+    def id(self):
         """
-        the checksum field (``uint16_t``, read-write)
+        Id field getter ('int')
         """
-        def __get__(self):
-            return <uint16_t> self.ptr.checksum()
+        return <uint16_t> self.ptr.ident()
 
-    property src_addr:
+    @id.setter
+    def id(self, value):
         """
-        the source address field (``IPv4Address``, read-write)
+        Id field setter ('int')
         """
-        def __get__(self):
-            return IPv4Address(self.ptr.src_addr().to_uint32())
-        def __set__(self, new_src):
-            if isinstance(new_src, IPv4Address):
-                self.ptr.src_addr((<IPv4Address> new_src).ptr[0])
-            else:
-                new_src = bytes(new_src)
-                self.ptr.src_addr(cppIPv4Address(<string> new_src))
+        cdef uint16_t v = <uint16_t> int(value)
+        self.ptr.ident(v)
 
-    property dst_addr:
-        """
-        the destination address field (``IPv4Address``, read-write)
-        """
-        def __get__(self):
-            return IPv4Address(self.ptr.dst_addr().to_uint32())
-        def __set__(self, new_dst):
-            if isinstance(new_dst, IPv4Address):
-                self.ptr.dst_addr((<IPv4Address> new_dst).ptr[0])
-            else:
-                new_dst = bytes(new_dst)
-                self.ptr.dst_addr(cppIPv4Address(<string> new_dst))
 
-    property version:
+    @property
+    def frag_off(self):
         """
-        the version field (4 bits, read-write)
+        Fragment offset field getter ('int')
         """
-        def __get__(self):
-            return <uint8_t> self.ptr.version()
-        def __set__(self, value):
-            self.ptr.version(small_uint4(<uint8_t>int(value)))
+        return <uint16_t> self.ptr.frag_off()
 
-    property fragmented:
+    @frag_off.setter
+    def frag_off(self, value):
         """
-        ``True`` if the IP PDU is fragmented (read-only)
+        Fragment offset field setter ('int')
         """
-        def __get__(self):
-            return bool(self.ptr.is_fragmented())
+        cdef uint16_t v = <uint16_t> int(value)
+        self.ptr.frag_off(v)
 
-    property stream_identifier:
-        """
-        Stream Identifier option (``uint16_t``, read-write)
 
-        The getter returns ``None`` if the option is not set
+    @property
+    def ttl(self):
         """
-        def __get__(self):
-            try:
-                return <uint16_t> self.ptr.stream_identifier()
-            except OptionNotFound:
-                return None
+        Time To Live field getter ('int')
+        """
+        return <uint8_t> self.ptr.ttl()
 
-        def __set__(self, value):
-            self.ptr.stream_identifier(<uint16_t>int(value))
+    @ttl.setter
+    def ttl(self, value):
+        """
+        Time To Live field setter ('int')
+        """
+        cdef uint8_t v = <uint8_t> int(value)
+        self.ptr.ttl(v)
+
+
+    @property
+    def protocol(self):
+        """
+        Protocol field getter ('int')
+        """
+        return <uint8_t> self.ptr.protocol()
+
+    @protocol.setter
+    def protocol(self, value):
+        """
+        Protocol field setter ('int')
+        """
+        cdef uint8_t v = <uint8_t> int(value)
+        self.ptr.protocol(v)
+
+
+    @property
+    def checksum(self):
+        """
+        Checksum field getter ('int')
+        """
+        return <uint16_t> self.ptr.checksum()
+
+
+    @property
+    def src_addr(self):
+        """
+        Source address field getter ('IPv4Address')
+        """
+        return IPv4Address(self.ptr.src_addr().to_uint32())
+
+    @src_addr.setter
+    def src_addr(self, new_src):
+        """
+        Source address field setter ('IPv4Address')
+        """
+        if isinstance(new_src, IPv4Address):
+            self.ptr.src_addr((<IPv4Address> new_src).ptr[0])
+        else:
+            new_src = bytes(new_src)
+            self.ptr.src_addr(cppIPv4Address(<string> new_src))
+
+
+    @property
+    def dst_addr(self):
+        """
+        Destination address field getter ('IPv4Address')
+        """
+        return IPv4Address(self.ptr.dst_addr().to_uint32())
+
+    @dst_addr.setter
+    def dst_addr(self, new_dst):
+        """
+        Destination address field setter ('IPv4Address')
+        """
+        if isinstance(new_dst, IPv4Address):
+            self.ptr.dst_addr((<IPv4Address> new_dst).ptr[0])
+        else:
+            new_dst = bytes(new_dst)
+            self.ptr.dst_addr(cppIPv4Address(<string> new_dst))
+
+
+    @property
+    def version(self):
+        """
+        Version field getter ('int')
+        """
+        return <uint8_t> self.ptr.version()
+
+    @version.setter
+    def version(self, value):
+        """
+        Version field setter ('int')
+        """
+        self.ptr.version(small_uint4(<uint8_t>int(value)))
+
+
+    @property
+    def fragmented(self):
+        """
+        Fragmented field getter ('bool')
+        True if the IP PDU is fragmented (read-only)
+        """
+        return bool(self.ptr.is_fragmented())
+
+
+    @property
+    def stream_identifier(self):
+        """
+        Stream Identifier option getter ('int')
+        Returns ``None`` if the option is not set
+        """
+        try:
+            return <uint16_t> self.ptr.stream_identifier()
+        except OptionNotFound:
+            return None
+
+    @stream_identifier.setter
+    def stream_identifier(self, value):
+        """
+        Stream Identifier option setter ('int')
+        """
+        self.ptr.stream_identifier(<uint16_t>int(value))
+
 
     cpdef set_record_route(self, pointer, routes):
         """

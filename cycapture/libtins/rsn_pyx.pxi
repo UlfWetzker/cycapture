@@ -79,33 +79,51 @@ cdef class RSNInformation(object):
         akm = int(akm)
         self.ptr.add_akm_cypher(<RSN_AKMSuites> akm)
 
-    property group_suite:
+    @property
+    def group_suite(self):
         """
-        group suite cypher field (read-write, :py:class:`~.RSNInformation.CypherSuites`)
+        group suite cypher field getter (:py:class:`~.RSNInformation.CypherSuites`)
         """
-        def __get__(self):
-            return int(self.ptr.group_suite())
-        def __set__(self, value):
-            value = int(value)
-            self.ptr.group_suite(<RSN_CypherSuites> value)
+        return int(self.ptr.group_suite())
 
-    property version:
+    @group_suite.setter
+    def group_suite(self, value):
         """
-        Version field (read-write, `uint16_t`)
+        group suite cypher field setter (:py:class:`~.RSNInformation.CypherSuites`)
         """
-        def __get__(self):
-            return self.ptr.version()
-        def __set__(self, value):
-            self.ptr.version(<uint16_t> int(value))
+        value = int(value)
+        self.ptr.group_suite(<RSN_CypherSuites> value)
 
-    property capabilities:
+
+    @property
+    def version(self):
         """
-        capabilities field (read-write, `uint16_t`)
+        Version field getter (`uint16_t`)
         """
-        def __get__(self):
-            return self.ptr.capabilities()
-        def __set__(self, value):
-            self.ptr.capabilities(<uint16_t> int(value))
+        return self.ptr.version()
+
+    @version.setter
+    def version(self, value):
+        """
+        Version field setter (`uint16_t`)
+        """
+        self.ptr.version(<uint16_t> int(value))
+
+
+    @property
+    def capabilities(self):
+        """
+        capabilities field getter (`uint16_t`)
+        """
+        return self.ptr.capabilities()
+
+    @capabilities.setter
+    def capabilities(self, value):
+        """
+        capabilities field setter (`uint16_t`)
+        """
+        self.ptr.capabilities(<uint16_t> int(value))
+
 
     cpdef get_pairwise_cyphers(self):
         """

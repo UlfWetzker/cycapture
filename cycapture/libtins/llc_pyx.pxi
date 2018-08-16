@@ -62,107 +62,168 @@ cdef class LLC(PDU):
     cpdef clear_information_fields(self):
         self.ptr.clear_information_fields()
 
-    property group:
-        """
-        group destination bit (read-write, `bool`)
-        """
-        def __get__(self):
-            return bool(self.ptr.group())
-        def __set__(self, value):
-            value = bool(value)
-            self.ptr.group(<cpp_bool> value)
 
-    property dsap:
+    @property
+    def group(self):
         """
-        dsap field (read-write, `uint8_t`)
+        group destination bit getter ('bool')
         """
-        def __get__(self):
-            return int(self.ptr.dsap())
-        def __set__(self, value):
-            self.ptr.dsap(<uint8_t> int(value))
+        return bool(self.ptr.group())
 
-    property response:
+    @group.setter
+    def group(self, value):
         """
-        response bit (read-write, `bool`)
+        group destination bit setter ('bool')
         """
-        def __get__(self):
-            return bool(self.ptr.response())
-        def __set__(self, value):
-            value = bool(value)
-            self.ptr.response(<cpp_bool> value)
+        value = bool(value)
+        self.ptr.group(<cpp_bool> value)
 
-    property ssap:
-        """
-        ssap field (read-write, `uint8_t`)
-        """
-        def __get__(self):
-            return int(self.ptr.ssap())
-        def __set__(self, value):
-            self.ptr.ssap(<uint8_t> int(value))
 
-    property type:
+    @property
+    def dsap(self):
+        """
+        dsap field getter ('int')
+        """
+        return int(self.ptr.dsap())
+
+    @dsap.setter
+    def dsap(self, value):
+        """
+        dsap field setter ('int')
+        """
+        self.ptr.dsap(<uint8_t> int(value))
+
+
+    @property
+    def response(self):
+        """
+        response bit getter ('bool')
+        """
+        return bool(self.ptr.response())
+
+    @response.setter
+    def response(self, value):
+        """
+        response bit setter ('bool')
+        """
+        value = bool(value)
+        self.ptr.response(<cpp_bool> value)
+
+
+    @property
+    def ssap(self):
+        """
+        ssap field getter ('int')
+        """
+        return int(self.ptr.ssap())
+
+    @ssap.setter
+    def ssap(self, value):
+        """
+        ssap field setter ('int')
+        """
+        self.ptr.ssap(<uint8_t> int(value))
+
+
+    @property
+    def type(self):
+        """
+        LLC frame format type getter (:py:class:`~.LLC.Format`)
+        """
+        return int(self.ptr.type())
+
+    @type.setter
+    def type(self, value):
         """
         LLC frame format type (read-write, :py:class:`~.LLC.Format`)
         """
-        def __get__(self):
-            return int(self.ptr.type())
-        def __set__(self, value):
-            if isinstance(value, LLC.Format):
-                value = value.value
-            value = int(value)
-            self.ptr.type(<LLC_Format> value)
+        if isinstance(value, LLC.Format):
+            value = value.value
+        value = int(value)
+        self.ptr.type(<LLC_Format> value)
 
-    property send_seq_number:
-        """
-        sender send sequence number (read-write, `uint8_t`; only applied if format is INFORMATION)
-        """
-        def __get__(self):
-            return int(self.ptr.send_seq_number())
-        def __set__(self, value):
-            self.ptr.send_seq_number(<uint8_t> int(value))
 
-    property receive_seq_number:
+    @property
+    def send_seq_number(self):
         """
-        sender receive sequence number (read-write, `uint8_t`; only applied if format is INFORMATION or SUPERVISORY)
+        sender send sequence number getter ('int'; only applied if format is INFORMATION)
         """
-        def __get__(self):
-            return int(self.ptr.receive_seq_number())
-        def __set__(self, value):
-            self.ptr.receive_seq_number(<uint8_t> int(value))
+        return int(self.ptr.send_seq_number())
 
-    property poll_final:
+    @send_seq_number.setter
+    def send_seq_number(self, value):
         """
-        poll/final flag (read-write, `bool`)
+        sender send sequence number setter ('int'; only applied if format is INFORMATION)
         """
-        def __get__(self):
-            return bool(self.ptr.poll_final())
-        def __set__(self, value):
-            value = bool(value)
-            self.ptr.poll_final(<cpp_bool> value)
+        self.ptr.send_seq_number(<uint8_t> int(value))
 
-    property supervisory_function:
-        """
-        supervisory function (read-write, :py:class:`~.LLC.SupervisoryFunctions`; only applied if format is SUPERVISORY)
-        """
-        def __get__(self):
-            return int(self.ptr.supervisory_function())
-        def __set__(self, value):
-            if isinstance(value, LLC.SupervisoryFunctions):
-                value = value.value
-            value = int(value)
-            self.ptr.supervisory_function(<LLC_SupervisoryFunctions> value)
 
-    property modifier_function:
+    @property
+    def receive_seq_number(self):
         """
-        modifier function field (read-write, :py:class:`~.LLC.ModifierFunctions`; only applied if format is UNNUMBERED)
+        sender receive sequence number getter ('int'; only applied if format is INFORMATION or SUPERVISORY)
         """
-        def __get__(self):
-            return int(self.ptr.modifier_function())
-        def __set__(self, value):
-            if isinstance(value, LLC.ModifierFunctions):
-                value = value.value
-            value = int(value)
-            self.ptr.modifier_function(<LLC_ModifierFunctions> value)
+        return int(self.ptr.receive_seq_number())
+
+    @receive_seq_number.setter
+    def receive_seq_number(self, value):
+        """
+        sender receive sequence number setter ('int'; only applied if format is INFORMATION or SUPERVISORY)
+        """
+        self.ptr.receive_seq_number(<uint8_t> int(value))
+
+
+    @property
+    def poll_final(self):
+        """
+        poll/final flag getter ('bool')
+        """
+        return bool(self.ptr.poll_final())
+
+    @poll_final.setter
+    def poll_final(self, value):
+        """
+        poll/final flag setter ('bool')
+        """
+        value = bool(value)
+        self.ptr.poll_final(<cpp_bool> value)
+
+
+    @property
+    def supervisory_function__get__(self):
+        """
+        supervisory function (:py:class:`~.LLC.SupervisoryFunctions`; only applied if format is SUPERVISORY)
+        """
+        return int(self.ptr.supervisory_function())
+
+    @supervisory_function.setter
+    def supervisory_function(self, value):
+        """
+        supervisory function (:py:class:`~.LLC.SupervisoryFunctions`; only applied if format is SUPERVISORY)
+        """
+        if isinstance(value, LLC.SupervisoryFunctions):
+            value = value.value
+        value = int(value)
+        self.ptr.supervisory_function(<LLC_SupervisoryFunctions> value)
+
+
+    @property
+    def modifier_function(self):
+        """
+        modifier function field getter (:py:class:`~.LLC.ModifierFunctions`; only applied if format is UNNUMBERED)
+        """
+        return int(self.ptr.modifier_function())
+
+    @modifier_function.setter
+    def modifier_function(self, value):
+        """
+        modifier function field setter (:py:class:`~.LLC.ModifierFunctions`; only applied if format is UNNUMBERED)
+        """
+        if isinstance(value, LLC.ModifierFunctions):
+            value = value.value
+        value = int(value)
+        self.ptr.modifier_function(<LLC_ModifierFunctions> value)
+
 
     cdef cppPDU* replace_ptr_with_buf(self, uint8_t* buf, int size) except NULL:
         if self.ptr is not NULL and self.parent is None:

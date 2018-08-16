@@ -86,32 +86,32 @@ cdef class NetworkInterface(object):
     def __hash__(self):
         return hash((self.id, self.name))
 
-    property id:
+    @property
+    def id(self):
         """
-        Returns the interface id (read-only property)
+        Interface id getter ('int')
         """
-        def __get__(self):
-            return int(self.interface.ident())
+        return int(self.interface.ident())
 
-    property name:
+    @property
+    def name(self):
         """
-        Returns the interface name (read-only property)
+        Interface name getter ('bytes')
         """
-        def __get__(self):
-            return <bytes>(self.interface.name())
+        return <bytes>(self.interface.name())
 
-    property addresses:
+    @property
+    def addresses(self):
         """
-        the IPv4 address, netmask, broadcast address and hardware addresss associated with this interface.
+        Getter for the IPv4 address, netmask, broadcast address and hardware addresss associated with this interface.
         """
-        def __get__(self):
-            cdef cppNetworkInterface.Info infos = self.interface.addresses()
-            return NetworkInterface.NI_addresses_tuple(
-                IPv4Address(infos.ip_addr.to_uint32()),
-                IPv4Address(infos.netmask.to_uint32()),
-                IPv4Address(infos.bcast_addr.to_uint32()),
-                HWAddress(infos.hw_addr.to_string())
-            )
+        cdef cppNetworkInterface.Info infos = self.interface.addresses()
+        return NetworkInterface.NI_addresses_tuple(
+            IPv4Address(infos.ip_addr.to_uint32()),
+            IPv4Address(infos.netmask.to_uint32()),
+            IPv4Address(infos.bcast_addr.to_uint32()),
+            HWAddress(infos.hw_addr.to_string())
+        )
 
     cpdef is_loopback(self):
         """

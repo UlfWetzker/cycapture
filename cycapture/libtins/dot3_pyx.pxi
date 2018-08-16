@@ -40,39 +40,56 @@ cdef class Dot3(PDU):
             The source hardware address
         """
 
-    property src_addr:
+    @property
+    def src_addr(self):
         """
-        Source address (read-write, :py:class:`~.HWAddress`)
+        Source address getter (:py:class:`~.HWAddress`)
         """
-        def __get__(self):
-            cdef cppHWAddress6 src = self.ptr.src_addr()
-            return HWAddress(src.to_string())
-        def __set__(self, value):
-            if not isinstance(value, HWAddress):
-                value = HWAddress(value)
-            self.ptr.src_addr(<cppHWAddress6>((<HWAddress> value).ptr[0]))
+        cdef cppHWAddress6 src = self.ptr.src_addr()
+        return HWAddress(src.to_string())
 
-    property dst_addr:
+    @src_addr.setter
+    def src_addr(self, value):
         """
-        Destination address (read-write, :py:class:`~.HWAddress`)
+        Source address setter (:py:class:`~.HWAddress`)
         """
-        def __get__(self):
-            cdef cppHWAddress6 dst = self.ptr.dst_addr()
-            return HWAddress(dst.to_string())
-        def __set__(self, value):
-            if not isinstance(value, HWAddress):
-                value = HWAddress(value)
-            self.ptr.dst_addr(<cppHWAddress6>((<HWAddress> value).ptr[0]))
+        if not isinstance(value, HWAddress):
+            value = HWAddress(value)
+        self.ptr.src_addr(<cppHWAddress6>((<HWAddress> value).ptr[0]))
 
-    property length:
-        """
-        Length field (read-write, `uint16_t`)
-        """
-        def __get__(self):
-            return self.ptr.length()
 
-        def __set__(self, value):
-            self.ptr.length(<uint16_t> int(value))
+    @property
+    def dst_addr(self):
+        """
+        Destination address getter (:py:class:`~.HWAddress`)
+        """
+        cdef cppHWAddress6 dst = self.ptr.dst_addr()
+        return HWAddress(dst.to_string())
+
+    @dst_addr.setter
+    def dst_addr(self, value):
+        """
+        Destination address setter (:py:class:`~.HWAddress`)
+        """
+        if not isinstance(value, HWAddress):
+            value = HWAddress(value)
+        self.ptr.dst_addr(<cppHWAddress6>((<HWAddress> value).ptr[0]))
+
+
+    @property
+    def length(self):
+        """
+        Length field getter (`uint16_t`)
+        """
+        return self.ptr.length()
+
+    @length.setter
+    def length(self, value):
+        """
+        Length field setter (`uint16_t`)
+        """
+        self.ptr.length(<uint16_t> int(value))
+
 
     cpdef send(self, PacketSender sender, NetworkInterface iface):
         if sender is None:

@@ -114,18 +114,24 @@ cdef class DHCP(BootP):
         __init__()
         """
 
-    property type:
+    @property
+    def type(self):
         """
-        DHCP type option (read-write, :py:class:`~.DHCP.Flags`)
+        DHCP type option getter (:py:class:`~.DHCP.Flags`)
         """
-        def __get__(self):
-            try:
-                return int((<cppDHCP*> self.ptr).type())
-            except OptionNotFound:
-                return None
-        def __set__(self, value):
-            value = int(value)
-            (<cppDHCP*> self.ptr).type(<DHCP_Flags> value)
+        try:
+            return int((<cppDHCP*> self.ptr).type())
+        except OptionNotFound:
+            return None
+
+    @type.setter
+    def type(self, value):
+        """
+        DHCP type option setter (:py:class:`~.DHCP.Flags`)
+        """
+        value = int(value)
+        (<cppDHCP*> self.ptr).type(<DHCP_Flags> value)
+
 
     cpdef end(self):
         """
@@ -137,154 +143,220 @@ cdef class DHCP(BootP):
         """
         (<cppDHCP*> self.ptr).end()
 
-    property server_identifier:
+    
+    @property
+    def server_identifier(self):
         """
-        Server identifier option (read-write, :py:class:`~.IPv4Address`)
+        Server identifier option getter (:py:class:`~.IPv4Address`)
         """
-        def __get__(self):
-            try:
-                return IPv4Address((<cppDHCP*> self.ptr).server_identifier().to_string())
-            except OptionNotFound:
-                return None
-        def __set__(self, value):
-            value = IPv4Address(value)
-            (<cppDHCP*> self.ptr).server_identifier((<IPv4Address> value).ptr[0])
+        try:
+            return IPv4Address((<cppDHCP*> self.ptr).server_identifier().to_string())
+        except OptionNotFound:
+            return None
 
-    property lease_time:
+    @server_identifier.setter
+    def server_identifier(self, value):
         """
-        Lease time option (read-write, `uint32_t`)
+        Server identifier option setter (:py:class:`~.IPv4Address`)
         """
-        def __get__(self):
-            try:
-                return int((<cppDHCP*> self.ptr).lease_time())
-            except OptionNotFound:
-                return None
-        def __set__(self, value):
-            (<cppDHCP*> self.ptr).lease_time(<uint32_t> int(value))
+        value = IPv4Address(value)
+        (<cppDHCP*> self.ptr).server_identifier((<IPv4Address> value).ptr[0])
 
-    property renewal_time:
-        """
-        Renewal time option (read-write, `uint32_t`)
-        """
-        def __get__(self):
-            try:
-                return int((<cppDHCP*> self.ptr).renewal_time())
-            except OptionNotFound:
-                return None
-        def __set__(self, value):
-            (<cppDHCP*> self.ptr).renewal_time(<uint32_t> int(value))
 
-    property rebind_time:
+    @property
+    def lease_time(self):
         """
-        Rebind time option (read-write, `uint32_t`)
+        Lease time option getter (`int`)
         """
+        try:
+            return int((<cppDHCP*> self.ptr).lease_time())
+        except OptionNotFound:
+            return None
 
-        def __get__(self):
-            try:
-                return int((<cppDHCP*> self.ptr).rebind_time())
-            except OptionNotFound:
-                return None
-        def __set__(self, value):
-            (<cppDHCP*> self.ptr).rebind_time(<uint32_t> int(value))
+    @lease_time.setter
+    def lease_time(self, value):
+        """
+        Lease time option setter (`uint32_t`)
+        """
+        (<cppDHCP*> self.ptr).lease_time(<uint32_t> int(value))
 
-    property subnet_mask:
-        """
-        Subnet mask option (read-write, :py:class:`~.IPv4Address`)
-        """
-        def __get__(self):
-            try:
-                return IPv4Address((<cppDHCP*> self.ptr).subnet_mask().to_string())
-            except OptionNotFound:
-                return None
-        def __set__(self, value):
-            value = IPv4Address(value)
-            (<cppDHCP*> self.ptr).subnet_mask((<IPv4Address> value).ptr[0])
 
-    property routers:
+    @property
+    def renewal_time(self):
         """
-        Routers option (read-write, list of :py:class:`~.IPv4Address`)
+        Renewal time option getter (`int`)
         """
-        def __get__(self):
-            cdef vector[cppIPv4Address] v
-            try:
-                v = (<cppDHCP*> self.ptr).routers()
-                return [IPv4Address(cpp_addr.to_string()) for cpp_addr in v]
-            except OptionNotFound:
-                return None
-        def __set__(self, value):
-            cdef vector[cppIPv4Address] v
-            for addr in value:
-                v.push_back(IPv4Address(addr).ptr[0])
-            (<cppDHCP*> self.ptr).routers(v)
+        try:
+            return int((<cppDHCP*> self.ptr).renewal_time())
+        except OptionNotFound:
+            return None
 
-    property domain_name_servers:
+    @renewal_time.setter
+    def renewal_time(self, value):
         """
-        Domain name servers option (read-write, list of :py:class:`~.IPv4Address`)
+        Renewal time option setter (`uint32_t`)
         """
-        def __get__(self):
-            cdef vector[cppIPv4Address] v
-            try:
-                v = (<cppDHCP*> self.ptr).domain_name_servers()
-                return [IPv4Address(cpp_addr.to_string()) for cpp_addr in v]
-            except OptionNotFound:
-                return None
-        def __set__(self, value):
-            cdef vector[cppIPv4Address] v
-            for addr in value:
-                v.push_back(IPv4Address(addr).ptr[0])
-            (<cppDHCP*> self.ptr).domain_name_servers(v)
+        (<cppDHCP*> self.ptr).renewal_time(<uint32_t> int(value))
 
-    property broadcast:
-        """
-        Broadcast option (read-write, :py:class:`~.IPv4Address`)
-        """
-        def __get__(self):
-            try:
-                return IPv4Address((<cppDHCP*> self.ptr).broadcast().to_string())
-            except OptionNotFound:
-                return None
-        def __set__(self, value):
-            value = IPv4Address(value)
-            (<cppDHCP*> self.ptr).broadcast((<IPv4Address> value).ptr[0])
 
-    property requested_ip:
+    @property
+    def rebind_time(self):
         """
-        Requested IP option (read-write, :py:class:`~.IPv4Address`)
+        Rebind time option getter (`int`)
         """
-        def __get__(self):
-            try:
-                return IPv4Address((<cppDHCP*> self.ptr).requested_ip().to_string())
-            except OptionNotFound:
-                return None
-        def __set__(self, value):
-            value = IPv4Address(value)
-            (<cppDHCP*> self.ptr).requested_ip((<IPv4Address> value).ptr[0])
+        try:
+            return int((<cppDHCP*> self.ptr).rebind_time())
+        except OptionNotFound:
+            return None
 
-    property domain_name:
+    @rebind_time.setter
+    def rebind_time(self, value):
         """
-        Domain name option (read-write, `bytes`)
+        Rebind time option setter (`uint32_t`)
         """
-        def __get__(self):
-            try:
-                return <bytes> ((<cppDHCP*> self.ptr).domain_name())
-            except OptionNotFound:
-                return None
-        def __set__(self, value):
-            value = bytes(value)
-            (<cppDHCP*> self.ptr).domain_name(<string> value)
+        (<cppDHCP*> self.ptr).rebind_time(<uint32_t> int(value))
 
-    property hostname:
+
+    @property
+    def subnet_mask(self):
         """
-        Hostname option (read-write, `bytes`)
+        Subnet mask option getter (:py:class:`~.IPv4Address`)
         """
-        def __get__(self):
-            try:
-                return <bytes> ((<cppDHCP*> self.ptr).hostname())
-            except OptionNotFound:
-                return None
-        def __set__(self, value):
-            value = bytes(value)
-            (<cppDHCP*> self.ptr).hostname(<string> value)
+        try:
+            return IPv4Address((<cppDHCP*> self.ptr).subnet_mask().to_string())
+        except OptionNotFound:
+            return None
+
+    @subnet_mask.setter
+    def subnet_mask(self, value):
+        """
+        Subnet mask option setter (:py:class:`~.IPv4Address`)
+        """
+        value = IPv4Address(value)
+        (<cppDHCP*> self.ptr).subnet_mask((<IPv4Address> value).ptr[0])
+
+
+    @property
+    def routers(self):
+        """
+        Routers option getter (list of :py:class:`~.IPv4Address`)
+        """
+        cdef vector[cppIPv4Address] v
+        try:
+            v = (<cppDHCP*> self.ptr).routers()
+            return [IPv4Address(cpp_addr.to_string()) for cpp_addr in v]
+        except OptionNotFound:
+            return None
+
+    @routers.setter
+    def routers(self, value):
+        """
+        Routers option setter (list of :py:class:`~.IPv4Address`)
+        """
+        cdef vector[cppIPv4Address] v
+        for addr in value:
+            v.push_back(IPv4Address(addr).ptr[0])
+        (<cppDHCP*> self.ptr).routers(v)
+
+
+    @property
+    def domain_name_servers(self):
+        """
+        Domain name servers option getter (list of :py:class:`~.IPv4Address`)
+        """
+        cdef vector[cppIPv4Address] v
+        try:
+            v = (<cppDHCP*> self.ptr).domain_name_servers()
+            return [IPv4Address(cpp_addr.to_string()) for cpp_addr in v]
+        except OptionNotFound:
+            return None
+
+    @domain_name_servers.setter
+    def domain_name_servers(self, value):
+        """
+        Domain name servers option setter (list of :py:class:`~.IPv4Address`)
+        """
+        cdef vector[cppIPv4Address] v
+        for addr in value:
+            v.push_back(IPv4Address(addr).ptr[0])
+        (<cppDHCP*> self.ptr).domain_name_servers(v)
+
+
+    @property
+    def broadcast(self):
+        """
+        Broadcast option getter (:py:class:`~.IPv4Address`)
+        """
+        try:
+            return IPv4Address((<cppDHCP*> self.ptr).broadcast().to_string())
+        except OptionNotFound:
+            return None
+
+    @broadcast.setter
+    def broadcast(self, value):
+        """
+        Broadcast option setter (:py:class:`~.IPv4Address`)
+        """
+        value = IPv4Address(value)
+        (<cppDHCP*> self.ptr).broadcast((<IPv4Address> value).ptr[0])
+
+
+    @property
+    def requested_ip(self):
+        """
+        Requested IP option getter (:py:class:`~.IPv4Address`)
+        """
+        try:
+            return IPv4Address((<cppDHCP*> self.ptr).requested_ip().to_string())
+        except OptionNotFound:
+            return None
+
+    @requested_ip.setter
+    def requested_ip(self, value):
+        """
+        Requested IP option setter (:py:class:`~.IPv4Address`)
+        """
+        value = IPv4Address(value)
+        (<cppDHCP*> self.ptr).requested_ip((<IPv4Address> value).ptr[0])
+
+
+    @property
+    def domain_name(self):
+        """
+        Domain name option getter (`bytes`)
+        """
+        try:
+            return <bytes> ((<cppDHCP*> self.ptr).domain_name())
+        except OptionNotFound:
+            return None
+
+    @domain_name.setter
+    def domain_name(self, value):
+        """
+        Domain name option setter (`bytes`)
+        """
+        value = bytes(value)
+        (<cppDHCP*> self.ptr).domain_name(<string> value)
+
+
+    @property
+    def hostname(self):
+        """
+        Hostname option getter (`bytes`)
+        """
+        try:
+            return <bytes> ((<cppDHCP*> self.ptr).hostname())
+        except OptionNotFound:
+            return None
+
+    @hostname.setter
+    def hostname(self, value):
+        """
+        Hostname option setter (`bytes`)
+        """
+        value = bytes(value)
+        (<cppDHCP*> self.ptr).hostname(<string> value)
+
 
     cpdef add_option(self, identifier, data=None):
         """

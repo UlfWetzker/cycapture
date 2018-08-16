@@ -80,92 +80,134 @@ cdef class TCP(PDU):
         """
         pass
 
-    property sport:
+    @property
+    def sport(self):
         """
-        Source port (read-write, `uint16_t`)
+        Source port getter ('int')
         """
-        def __get__(self):
-            return int(self.ptr.sport())
-        def __set__(self, value):
-            if value is None:
-                value = 0
-            self.ptr.sport(<uint16_t> int(value))
+        return int(self.ptr.sport())
 
-    property dport:
+    @sport.setter
+    def sport(self, value):
         """
-        Destination port (read-write, `uint16_t`)
+        Source port setter ('int')
         """
-        def __get__(self):
-            return int(self.ptr.dport())
-        def __set__(self, value):
-            if value is None:
-                value = 0
-            self.ptr.dport(<uint16_t> int(value))
+        if value is None:
+            value = 0
+        self.ptr.sport(<uint16_t> int(value))
 
-    property seq:
-        """
-        Sequence number field (read-write, `uint32_t`)
-        """
-        def __get__(self):
-            return int(self.ptr.seq())
-        def __set__(self, value):
-            if value is None:
-                value = 0
-            self.ptr.seq(<uint32_t> int(value))
 
-    property ack_seq:
+    @property
+    def dport(self):
         """
-        Acknowledge number field (read-write, `uint32_t`)
+        Destination port getter ('int')
         """
-        def __get__(self):
-            return int(self.ptr.ack_seq())
-        def __set__(self, value):
-            if value is None:
-                value = 0
-            self.ptr.ack_seq(<uint32_t> int(value))
+        return int(self.ptr.dport())
 
-    property window:
+    @dport.setter
+    def dport(self, value):
         """
-        Window size field (read-write, `uint16_t`)
+        Destination port setter ('int')
         """
-        def __get__(self):
-            return int(self.ptr.window())
-        def __set__(self, value):
-            if value is None:
-                value = 32678
-            self.ptr.window(<uint16_t>int(value))
+        if value is None:
+            value = 0
+        self.ptr.dport(<uint16_t> int(value))
 
-    property checksum:
-        """
-        The checksum field (read-only)
-        """
-        def __get__(self):
-            return int(self.ptr.checksum())
 
-    property urg_ptr:
+    @property
+    def seq(self):
         """
-        Urgent pointer field (read-write, `uint16_t`)
+        Sequence number field getter ('int')
         """
-        def __get__(self):
-            return int(self.ptr.urg_ptr())
-        def __set__(self, value):
-            if value is None:
-                value = 0
-            self.ptr.urg_ptr(<uint16_t>int(value))
+        return int(self.ptr.seq())
 
-    property data_offset:
+    @seq.setter
+    def seq(self, value):
         """
-        Data offset field (read-write, `uint8_t`)
+        Sequence number field setter ('int')
         """
-        def __get__(self):
-            cdef small_uint4 offset = self.ptr.data_offset()
-            return <uint8_t> offset
-        def __set__(self, value):
-            cdef small_uint4 offset
-            if value is None:
-                pass            # ???
-            offset = small_uint4(<uint8_t>int(value))
-            self.ptr.data_offset(offset)
+        if value is None:
+            value = 0
+        self.ptr.seq(<uint32_t> int(value))
+
+
+    @property
+    def ack_seq(self):
+        """
+        Acknowledge number field getter ('int')
+        """
+        return int(self.ptr.ack_seq())
+
+    @ack_seq.setter
+    def ack_seq(self, value):
+        """
+        Acknowledge number field setter ('int')
+        """
+        if value is None:
+            value = 0
+        self.ptr.ack_seq(<uint32_t> int(value))
+
+
+    @property
+    def window(self):
+        """
+        Window size field getter ('int')
+        """
+        return int(self.ptr.window())
+
+    @window.setter
+    def window(self, value):
+        """
+        Window size field setter ('int')
+        """
+        if value is None:
+            value = 32678
+        self.ptr.window(<uint16_t>int(value))
+
+
+    @property
+    def checksum(self):
+        """
+        The checksum field getter ('int')
+        """
+        return int(self.ptr.checksum())
+
+
+    @property
+    def urg_ptr(self):
+        """
+        Urgent pointer field getter ('int')
+        """
+        return int(self.ptr.urg_ptr())
+
+    @urg_ptr.setter
+    def urg_ptr(self, value):
+        """
+        Urgent pointer field setter ('int')
+        """
+        if value is None:
+            value = 0
+        self.ptr.urg_ptr(<uint16_t>int(value))
+
+
+    @property
+    def data_offset(self):
+        """
+        Data offset field getter ('int')
+        """
+        cdef small_uint4 offset = self.ptr.data_offset()
+        return <uint8_t> offset
+
+    @data_offset.setter
+    def data_offset(self, value):
+        """
+        Data offset field setter ('int')
+        """
+        cdef small_uint4 offset
+        if value is None:
+            pass            # ???
+        offset = small_uint4(<uint8_t>int(value))
+        self.ptr.data_offset(offset)
 
     # flags
     cpdef get_flag(self, flag):
@@ -197,136 +239,260 @@ cdef class TCP(PDU):
         flag = TCP.Flags(flag)
         self.ptr.set_flag(<TcpFlags> flag, small_uint1(<uint8_t>1 if value else <uint8_t>0))
 
-    property fin_flag:
-        def __get__(self):
-            return bool(<uint8_t> self.ptr.get_flag(TCP.Flags.FIN))
-        def __set__(self, value):
-            self.ptr.set_flag(TCP.Flags.FIN, small_uint1(<uint8_t>1 if value else <uint8_t>0))
 
-    property syn_flag:
-        def __get__(self):
-            return bool(<uint8_t> self.ptr.get_flag(TCP.Flags.SYN))
-        def __set__(self, value):
-            self.ptr.set_flag(TCP.Flags.SYN, small_uint1(<uint8_t>1 if value else <uint8_t>0))
+    @property
+    def fin_flag(self):
+        """
+        Fin flag getter ('bool')
+        """
+        return bool(<uint8_t> self.ptr.get_flag(TCP.Flags.FIN))
 
-    property rst_flag:
-        def __get__(self):
-            return bool(<uint8_t> self.ptr.get_flag(TCP.Flags.RST))
-        def __set__(self, value):
-            self.ptr.set_flag(TCP.Flags.RST, small_uint1(<uint8_t>1 if value else <uint8_t>0))
+    @fin_flag.setter
+    def fin_flag(self, value):
+        """
+        Fin flag setter ('int')
+        """
+        self.ptr.set_flag(TCP.Flags.FIN, small_uint1(<uint8_t>1 if value else <uint8_t>0))
 
-    property psh_flag:
-        def __get__(self):
-            return bool(<uint8_t> self.ptr.get_flag(TCP.Flags.PSH))
-        def __set__(self, value):
-            self.ptr.set_flag(TCP.Flags.PSH, small_uint1(<uint8_t>1 if value else <uint8_t>0))
 
-    property ack_flag:
-        def __get__(self):
-            return bool(<uint8_t> self.ptr.get_flag(TCP.Flags.ACK))
-        def __set__(self, value):
-            self.ptr.set_flag(TCP.Flags.ACK, small_uint1(<uint8_t>1 if value else <uint8_t>0))
+    @property
+    def syn_flag(self):
+        """
+        Syn flag getter ('bool')
+        """
+        return bool(<uint8_t> self.ptr.get_flag(TCP.Flags.SYN))
 
-    property urg_flag:
-        def __get__(self):
-            return bool(<uint8_t> self.ptr.get_flag(TCP.Flags.URG))
-        def __set__(self, value):
-            self.ptr.set_flag(TCP.Flags.URG, small_uint1(<uint8_t>1 if value else <uint8_t>0))
+    @syn_flag.setter
+    def syn_flag(self, value):
+        """
+        Syn flag setter ('int')
+        """
+        self.ptr.set_flag(TCP.Flags.SYN, small_uint1(<uint8_t>1 if value else <uint8_t>0))
 
-    property ece_flag:
-        def __get__(self):
-            return bool(<uint8_t> self.ptr.get_flag(TCP.Flags.ECE))
-        def __set__(self, value):
-            self.ptr.set_flag(TCP.Flags.ECE, small_uint1(<uint8_t>1 if value else <uint8_t>0))
 
-    property cwr_flag:
-        def __get__(self):
-            return bool(<uint8_t> self.ptr.get_flag(TCP.Flags.CWR))
-        def __set__(self, value):
-            self.ptr.set_flag(TCP.Flags.CWR, small_uint1(<uint8_t>1 if value else <uint8_t>0))
+    @property
+    def rst_flag(self):
+        """
+        Rst flag getter ('bool')
+        """
+        return bool(<uint8_t> self.ptr.get_flag(TCP.Flags.RST))
 
-    property flags:
-        def __get__(self):
-            return <uint16_t> self.ptr.flags()
-        def __set__(self, value):
-            self.ptr.flags(small_uint12(<uint16_t>int(value)))
+    @rst_flag.setter
+    def rst_flag(self, value):
+        """
+        Rst flag setter ('int')
+        """
+        self.ptr.set_flag(TCP.Flags.RST, small_uint1(<uint8_t>1 if value else <uint8_t>0))
+
+
+    @property
+    def psh_flag(self):
+        """
+        Psh flag getter ('bool')
+        """
+        return bool(<uint8_t> self.ptr.get_flag(TCP.Flags.PSH))
+
+    @psh_flag.setter
+    def psh_flag(self, value):
+        """
+        Psh flag setter ('int')
+        """
+        self.ptr.set_flag(TCP.Flags.PSH, small_uint1(<uint8_t>1 if value else <uint8_t>0))
+
+    @property
+    def ack_flag(self):
+        """
+        Ack flag getter ('bool')
+        """
+        return bool(<uint8_t> self.ptr.get_flag(TCP.Flags.ACK))
+
+    @ack_flag.setter
+    def ack_flag(self, value):
+        """
+        Ack flag setter ('int')
+        """
+        self.ptr.set_flag(TCP.Flags.ACK, small_uint1(<uint8_t>1 if value else <uint8_t>0))
+
+    @property
+    def urg_flag(self):
+        """
+        Urg flag getter ('bool')
+        """
+        return bool(<uint8_t> self.ptr.get_flag(TCP.Flags.URG))
+
+    @urg_flag.setter
+    def urg_flag(self, value):
+        """
+        Urg flag setter ('int')
+        """
+        self.ptr.set_flag(TCP.Flags.URG, small_uint1(<uint8_t>1 if value else <uint8_t>0))
+
+
+    @property
+    def ece_flag(self):
+        """
+        Ece flag getter ('bool')
+        """
+        return bool(<uint8_t> self.ptr.get_flag(TCP.Flags.ECE))
+
+    @ece_flag.setter
+    def ece_flag(self, value):
+        """
+        Ece flag setter ('int')
+        """
+        self.ptr.set_flag(TCP.Flags.ECE, small_uint1(<uint8_t>1 if value else <uint8_t>0))
+
+
+    @property
+    def cwr_flag(self):
+        """
+        Cwr flag getter (`boot`)
+        """
+        return bool(<uint8_t> self.ptr.get_flag(TCP.Flags.CWR))
+
+    @cwr_flag.setter
+    def cwr_flag(self, value):
+        """
+        Cwr flag setter ('int')
+        """
+        self.ptr.set_flag(TCP.Flags.CWR, small_uint1(<uint8_t>1 if value else <uint8_t>0))
+
+
+    @property
+    def flags(self):
+        """
+        Flags getter ('int')
+        """
+        return <uint16_t> self.ptr.flags()
+
+    @flags.setter
+    def flags(self, value):
+        """
+        Flags setter ('int')
+        """
+        self.ptr.flags(small_uint12(<uint16_t>int(value)))
+
 
     # option
-    property mss:
-        def __get__(self):
-            cdef uint16_t opt
-            try:
-                opt = self.ptr.mss()
-            except OptionNotFound:
-                return None
-            return int(opt)
-        def __set__(self, value):
-            cdef tcp_pdu_option* mss_opt
-            if value is None:       # back to default value
-                value = 536
-            self.ptr.mss(<uint16_t>int(value))
+    @property
+    def mss(self):
+        """
+        Mss getter ('int')
+        """
+        cdef uint16_t opt
+        try:
+            opt = self.ptr.mss()
+        except OptionNotFound:
+            return None
+        return int(opt)
+
+    @mss.setter
+    def mss(self, value):
+        """
+        Mss setter ('int')
+        """
+        cdef tcp_pdu_option* mss_opt
+        if value is None:       # back to default value
+            value = 536
+        self.ptr.mss(<uint16_t>int(value))
+
 
     # option
-    property winscale:
-        def __get__(self):
-            cdef uint8_t opt
-            try:
-                opt = self.ptr.winscale()
-            except OptionNotFound:
-                return None
-            return int(opt)
+    @property
+    def winscale(self):
+        """
+        Winscale field getter ('int')
+        """
+        cdef uint8_t opt
+        try:
+            opt = self.ptr.winscale()
+        except OptionNotFound:
+            return None
+        return int(opt)
 
-        def __set__(self, value):
-            if value is None:
-                pass            # ???
-            self.ptr.winscale(<uint8_t>int(value))
+    @winscale.setter
+    def winscale(self, value):
+        """
+        Winscale field setter ('int')
+        """
+        if value is None:
+            pass            # ???
+        self.ptr.winscale(<uint8_t>int(value))
 
-    property altchecksum:
-        def __get__(self):
-            try:
-                return TCP.AltChecksums(self.ptr.altchecksum())
-            except OptionNotFound:
-                return None
-        def __set__(self, value):
-            value = TCP.AltChecksums(value)
-            self.ptr.altchecksum(<TcpAltChecksums> value)
+
+    @property
+    def aktchecksum(self):
+        """
+        Altchecksum getter
+        """
+        try:
+            return TCP.AltChecksums(self.ptr.altchecksum())
+        except OptionNotFound:
+            return None
+
+    @altchecksum.setter
+    def altchecksum(self, value):
+        """
+        Altchecksum setter
+        """
+        value = TCP.AltChecksums(value)
+        self.ptr.altchecksum(<TcpAltChecksums> value)
 
     # option
-    property sack_permitted:
-        def __get__(self):
-            return True if self.ptr.has_sack_permitted() else False
+    @property
+    def sack_permitted(self):
+        """
+        SACK permitted getter ('bool')
+        """
+        return True if self.ptr.has_sack_permitted() else False
 
     # option
     cpdef set_sack_permitted(self):
         self.ptr.sack_permitted()
 
-    property sack:
-        def __get__(self):
-            try:
-                return <list> (self.ptr.sack())
-            except OptionNotFound:
-                return None
 
-        def __set__(self, value):
-            if not PySequence_Check(value):
-                raise TypeError
-            cdef vector[uint32_t] v
-            for i in value:
-                v.push_back(<uint32_t> int(i))
-            self.ptr.sack(v)
+    @property
+    def sack(self):
+        """
+        SACK getter
+        """
+        try:
+            return <list> (self.ptr.sack())
+        except OptionNotFound:
+            return None
 
-    property timestamp:
-        def __get__(self):
-            cdef pair[uint32_t, uint32_t] p
-            try:
-                p = self.ptr.timestamp()
-            except OptionNotFound:
-                return None
-            return int(p.first), int(p.second)
+    @sack.setter
+    def sack(self, value):
+        """
+        SACK setter
+        """
+        if not PySequence_Check(value):
+            raise TypeError
+        cdef vector[uint32_t] v
+        for i in value:
+            v.push_back(<uint32_t> int(i))
+        self.ptr.sack(v)
 
-        def __set__(self, value):
-            val, rep = value
-            self.ptr.timestamp(<uint32_t> int(val), <uint32_t> int(rep))
+
+    @property
+    def timestamp(self):
+        """
+        Timestamp getter ('int')
+        """
+        cdef pair[uint32_t, uint32_t] p
+        try:
+            p = self.ptr.timestamp()
+        except OptionNotFound:
+            return None
+        return int(p.first), int(p.second)
+
+    @timestamp.setter
+    def timestamp(self, value):
+        """
+        Timestamp setter ('int')
+        """
+        val, rep = value
+        self.ptr.timestamp(<uint32_t> int(val), <uint32_t> int(rep))
 
 
     cpdef options(self):

@@ -62,26 +62,28 @@ cdef class DNS_Query(object):
             return not (<DNS_Query> self).equals(other)
         raise ValueError("this comparison is not implemented")
 
-    property name:
+    @property
+    def name(self):
         """
-        Domain name (read-only property)
+        Domain name getter ('bytes')
         """
-        def __get__(self):
-            return bytes(self.cpp_query.dname())
+        return bytes(self.cpp_query.dname())
 
-    property query_type:
-        """
-        Query type (read-only property)
-        """
-        def __get__(self):
-            return int(self.cpp_query.get_type())
 
-    property query_class:
+    @property
+    def query_type(self):
         """
-        Query class (read-only property)
+        Query type getter ('int')
         """
-        def __get__(self):
-            return int(self.cpp_query.query_class())
+        return int(self.cpp_query.get_type())
+
+
+    @property
+    def query_class(self):
+        """
+        Query class getter ('int')
+        """
+        return int(self.cpp_query.query_class())
 
 
 cdef class DNS_Resource(object):
@@ -164,40 +166,44 @@ cdef class DNS_Resource(object):
 
         raise ValueError("this comparison is not implemented")
 
-    property name:
+    @property
+    def name(self):
         """
-        Domain name (read-only property)
+        Domain name getter ('bytes')
         """
-        def __get__(self):
-            return bytes(self.cpp_resource.dname())
+        return bytes(self.cpp_resource.dname())
 
-    property data:
-        """
-        This resource's payload (read-only property)
-        """
-        def __get__(self):
-            return bytes(self.cpp_resource.data())
 
-    property query_type:
+    @property
+    def data(self):
         """
-        Record type (read-only property)
+        This resource's payload getter ('bytes')
         """
-        def __get__(self):
-            return int(self.cpp_resource.get_type())
+        return bytes(self.cpp_resource.data())
 
-    property query_class:
-        """
-        Record class (read-only property)
-        """
-        def __get__(self):
-            return int(self.cpp_resource.query_class())
 
-    property ttl:
+    @property
+    def query_type(self):
         """
-        Record TTL (read-only property)
+        Record type getter ('int')
         """
-        def __get__(self):
-            return int(self.cpp_resource.ttl())
+        return int(self.cpp_resource.get_type())
+
+
+    @property
+    def query_class(self):
+        """
+        Record class getter ('int')
+        """
+        return int(self.cpp_resource.query_class())
+
+
+    @property
+    def ttl(self):
+        """
+        Record TTL getter ('int')
+        """
+        return int(self.cpp_resource.ttl())
 
 
 cdef class DNS(PDU):
@@ -296,107 +302,171 @@ cdef class DNS(PDU):
         self.ptr = NULL
         self.parent = None
 
-    property id:
+    @property
+    def id(self):
         """
-        id field (read-write property)
+        id field getter ('int')
         """
-        def __get__(self):
-            return int(self.ptr.ident())
-        def __set__(self, value):
-            self.ptr.ident(<uint16_t> int(value))
+        return int(self.ptr.ident())
 
-    property qrtype:
+    @id.setter
+    def id(self, value):
         """
-        type field (read-write property).
+        id field setter ('int')
+        """
+        self.ptr.ident(<uint16_t> int(value))
 
-        Can be ``DNS.QRType.Query`` or ``DNS.QRType.Response``.
-        """
-        def __get__(self):
-            return int(self.ptr.get_type())
-        def __set__(self, value):
-            value = int(value)
-            self.ptr.set_type(<QRType> value)
 
-    property opcode:
+    @property
+    def qrtype(self):
         """
-        opcode field (read-write property).
+        type field getter ('int')
         """
-        def __get__(self):
-            return int(self.ptr.opcode())
-        def __set__(self, value):
-            self.ptr.opcode(<uint8_t>int(value))
+        return int(self.ptr.get_type())
 
-    property authoritative_answer:
+    @qrtype.setter
+    def qrtype(self, value):
         """
-        authoritative answer field (read-write property).
+        type field setter ('int')
         """
-        def __get__(self):
-            return int(self.ptr.authoritative_answer())
-        def __set__(self, value):
-            self.ptr.authoritative_answer(<uint8_t>int(value))
+        value = int(value)
+        self.ptr.set_type(<QRType> value)
 
-    property truncated:
-        """
-        truncated field (read-write property).
-        """
-        def __get__(self):
-            return int(self.ptr.truncated())
-        def __set__(self, value):
-            self.ptr.truncated(<uint8_t>int(value))
 
-    property recursion_desired:
+    @property
+    def opcode(self):
         """
-        recursion desired field (read-write property).
+        opcode field getter ('int')
         """
-        def __get__(self):
-            return int(self.ptr.recursion_desired())
-        def __set__(self, value):
-            self.ptr.recursion_desired(<uint8_t>int(value))
+        return int(self.ptr.opcode())
 
-    property recursion_available:
+    @opcode.setter
+    def opcode(self, value):
         """
-        recursion available field (read-write property).
+        opcode field setter ('int')
         """
-        def __get__(self):
-            return int(self.ptr.recursion_available())
-        def __set__(self, value):
-            self.ptr.recursion_available(<uint8_t>int(value))
+        self.ptr.opcode(<uint8_t>int(value))
 
-    property z:
-        """
-        z field (read-write property).
-        """
-        def __get__(self):
-            return int(self.ptr.z())
-        def __set__(self, value):
-            self.ptr.z(<uint8_t>int(value))
 
-    property authenticated_data:
+    @property
+    def authoritative_answer(self):
         """
-        authenticated data field (read-write property).
+        authoritative answer field getter ('int')
         """
-        def __get__(self):
-            return int(self.ptr.authenticated_data())
-        def __set__(self, value):
-            self.ptr.authenticated_data(<uint8_t>int(value))
+        return int(self.ptr.authoritative_answer())
 
-    property checking_disabled:
+    @authoritative_answer.setter
+    def authoritative_answer(self, value):
         """
-        checking disabled field (read-write property).
+        authoritative answer field setter ('int')
         """
-        def __get__(self):
-            return int(self.ptr.checking_disabled())
-        def __set__(self, value):
-            self.ptr.checking_disabled(<uint8_t>int(value))
+        self.ptr.authoritative_answer(<uint8_t>int(value))
 
-    property rcode:
+
+    @property
+    def truncated(self):
         """
-        rcode field (read-write property).
+        truncated field getter ('int')
         """
-        def __get__(self):
-            return int(self.ptr.rcode())
-        def __set__(self, value):
-            self.ptr.rcode(<uint8_t>int(value))
+        return int(self.ptr.truncated())
+
+    @truncated.setter
+    def truncated(self, value):
+        """
+        truncated field setter ('int')
+        """
+        self.ptr.truncated(<uint8_t>int(value))
+
+
+    @property
+    def recursion_desired(self):
+        """
+        recursion desired field getter ('int')
+        """
+        return int(self.ptr.recursion_desired())
+
+    @recursion_desired.setter
+    def recursion_desired(self, value):
+        """
+        recursion desired field setter ('int')
+        """
+        self.ptr.recursion_desired(<uint8_t>int(value))
+
+
+    @property
+    def recursion_available(self):
+        """
+        recursion available field getter ('int')
+        """
+        return int(self.ptr.recursion_available())
+
+    @recursion_available.setter
+    def recursion_available(self, value):
+        """
+        recursion available field setter ('int')
+        """
+        self.ptr.recursion_available(<uint8_t>int(value))
+
+
+    @property
+    def z(self):
+        """
+        z field getter ('int')
+        """
+        return int(self.ptr.z())
+
+    @z.setter
+    def z(self, value):
+        """
+        z field setter ('int')
+        """
+        self.ptr.z(<uint8_t>int(value))
+
+
+    @property
+    def authenticated_data(self):
+        """
+        authenticated data field getter ('int')
+        """
+        return int(self.ptr.authenticated_data())
+
+    @authenticated_data.setter
+    def authenticated_data(self, value):
+        """
+        authenticated data field setter ('int')
+        """
+        self.ptr.authenticated_data(<uint8_t>int(value))
+
+
+    @property
+    def checking_disabled(self):
+        """
+        checking disabled field getter ('int')
+        """
+        return int(self.ptr.checking_disabled())
+
+    @checking_disabled.setter
+    def checking_disabled(self, value):
+        """
+        checking disabled field setter ('int')
+        """
+        self.ptr.checking_disabled(<uint8_t>int(value))
+
+
+    @property
+    def rcode(self):
+        """
+        rcode field getter ('int')
+        """
+        return int(self.ptr.rcode())
+    
+    @rcode.setter
+    def rcode(self, value):
+        """
+        rcode field setter ('int')
+        """
+        self.ptr.rcode(<uint8_t>int(value))
+
 
     cpdef queries_count(self):
         """

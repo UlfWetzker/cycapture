@@ -46,19 +46,25 @@ cdef class PacketSender(object):
             del self.ptr
             self.ptr = NULL
 
-    property default_interface:
+    @property
+    def default_interface(self):
         """
-        default interface (read-write, :py:class:`~.NetworkInterface`)
+        default interface getter (:py:class:`~.NetworkInterface`)
         """
-        def __get__(self):
-            cdef cppNetworkInterface iface = self.ptr.default_interface()
-            return NetworkInterface.factory(&iface)
-        def __set__(self, iface):
-            if isinstance(iface, IPv4Address):
-                iface = NetworkInterface(address=iface)
-            if not isinstance(iface, NetworkInterface):
-                iface = NetworkInterface(name=iface)
-            self.ptr.default_interface((<NetworkInterface>iface).interface)
+        cdef cppNetworkInterface iface = self.ptr.default_interface()
+        return NetworkInterface.factory(&iface)
+
+    @default_interface.setter
+    def default_interface(self, iface):
+        """
+        default interface setter (:py:class:`~.NetworkInterface`)
+        """
+        if isinstance(iface, IPv4Address):
+            iface = NetworkInterface(address=iface)
+        if not isinstance(iface, NetworkInterface):
+            iface = NetworkInterface(name=iface)
+        self.ptr.default_interface((<NetworkInterface>iface).interface)
+
 
     cpdef send(self, PDU pdu, iface=None):
         if pdu is None:

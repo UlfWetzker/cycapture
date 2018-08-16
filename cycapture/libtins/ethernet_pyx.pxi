@@ -40,37 +40,51 @@ cdef class EthernetII(PDU):
             source address of the ethernet packet
         """
 
-    property src_addr:
+    @property
+    def src_addr(self):
         """
-        Source address (read-write property)
+        Source address getter (property)
         """
-        def __get__(self):
-            return HWAddress(<bytes> (self.ptr.src_addr().to_string()))
-        def __set__(self, value):
-            if not isinstance(value, HWAddress):
-                value = HWAddress(value)
-            self.ptr.src_addr(<cppHWAddress6>((<HWAddress> value).ptr[0]))
+        return HWAddress(<bytes> (self.ptr.src_addr().to_string()))
 
-    property dst_addr:
+    @src_addr.setter
+    def src_addr(self, value):
         """
-        Destination address (read-write property)
+        Source address setter (property)
         """
-        def __get__(self):
-            return HWAddress(<bytes> (self.ptr.dst_addr().to_string()))
-        def __set__(self, value):
-            if not isinstance(value, HWAddress):
-                value = HWAddress(value)
-            self.ptr.dst_addr(<cppHWAddress6>((<HWAddress> value).ptr[0]))
+        if not isinstance(value, HWAddress):
+            value = HWAddress(value)
+        self.ptr.src_addr(<cppHWAddress6>((<HWAddress> value).ptr[0]))
 
-    property payload_type:
+    @property
+    def dst_addr(self):
         """
-        Payload type (`uint16_t`, read-write property)
+        Destination address getter (property)
         """
-        def __get__(self):
-            return int(self.ptr.payload_type())
+        return HWAddress(<bytes> (self.ptr.dst_addr().to_string()))
 
-        def __set__(self, value):
-            self.ptr.payload_type(<uint16_t> int(value))
+    @dst_addr.setter
+    def dst_addr(self, value):
+        """
+        Destination address setter (property)
+        """
+        if not isinstance(value, HWAddress):
+            value = HWAddress(value)
+        self.ptr.dst_addr(<cppHWAddress6>((<HWAddress> value).ptr[0]))
+
+    @property
+    def payload_type(self):
+        """
+        Payload type getter (`uint16_t`)
+        """
+        return int(self.ptr.payload_type())
+
+    @payload_type.setter
+    def payload_type(self, value):
+        """
+        Payload type setter(`uint16_t`)
+        """
+        self.ptr.payload_type(<uint16_t> int(value))
 
     cpdef send(self, PacketSender sender, NetworkInterface iface):
         if sender is None:
