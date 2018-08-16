@@ -70,7 +70,7 @@ cdef extern from "tins/dns.h" namespace "Tins" nogil:
             query(const string &nm, QueryType tp, QueryClass cl)
             query()
 
-            const string &dname() const
+            string &dname() const
             void dname(const string &nm) except +custom_exception_handler
             QueryType get_type "type"() const
             void set_type "type"(QueryType tp)
@@ -81,9 +81,9 @@ cdef extern from "tins/dns.h" namespace "Tins" nogil:
             Resource(const string &dname, const string &data, uint16_t t, uint16_t rclass, uint32_t ttl)
             Resource()
 
-            const string &dname() const
+            string &dname() const
             void dname(const string &data) except +custom_exception_handler
-            const string &data() const
+            string &data() const
             void data(const string &data) except +custom_exception_handler
             uint16_t get_type "type"() const
             void set_type "type"(uint16_t data)
