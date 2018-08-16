@@ -72,28 +72,28 @@ cdef extern from "tins/dns.h" namespace "Tins" nogil:
 
             string &dname() const
             void dname(const string &nm) except +custom_exception_handler
-            QueryType get_type "type"() const
-            void set_type "type"(QueryType tp)
+            QueryType get_type "query_type"() const
+            void set_type "query_type"(QueryType tp)
             QueryClass query_class() const
             void query_class(QueryClass cl)
 
-        cppclass cppResource "Resource":
-            Resource(const string &dname, const string &data, uint16_t t, uint16_t rclass, uint32_t ttl)
-            Resource()
+        cppclass cppResource "resource":
+            resource(const string &dname, const string &data, uint16_t t, uint16_t rclass, uint32_t ttl)
+            resource()
 
             string &dname() const
             void dname(const string &data) except +custom_exception_handler
             string &data() const
             void data(const string &data) except +custom_exception_handler
-            uint16_t get_type "type"() const
-            void set_type "type"(uint16_t data)
+            uint16_t get_type "query_type"() const
+            void set_type "query_type"(uint16_t data)
             uint16_t query_class() const
             void query_class(uint16_t data)
             uint32_t ttl() const
             void ttl(uint16_t data)
 
         #typedef std::list<Query> queries_type;
-        #typedef std::list<Resource> resources_type;
+        #typedef std::list<resource> resources_type;
         #typedef IPv4Address address_type;
         #typedef IPv6Address address_v6_type;
 

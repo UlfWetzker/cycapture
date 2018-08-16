@@ -2,7 +2,7 @@
 
 cdef extern from "tins/ip_reassembler.h" namespace "Tins" nogil:
 
-    ctypedef enum packet_status "Tins::IPv4Reassembler::packet_status":
+    ctypedef enum PacketStatus "Tins::IPv4Reassembler::PacketStatus":
         TINS_NOT_FRAGMENTED "Tins::IPv4Reassembler::NOT_FRAGMENTED",
         TINS_FRAGMENTED "Tins::IPv4Reassembler::FRAGMENTED",
         TINS_REASSEMBLED "Tins::IPv4Reassembler::REASSEMBLED"
@@ -13,7 +13,7 @@ cdef extern from "tins/ip_reassembler.h" namespace "Tins" nogil:
     cdef cppclass IPv4Reassembler:
         IPv4Reassembler()
         IPv4Reassembler(overlapping_technique)
-        packet_status process(cppPDU &pdu)
+        PacketStatus process(cppPDU &pdu)
         #void clear_streams()
         #void remove_stream(uint16_t ident, IPv4Address addr1, IPv4Address addr2)
 

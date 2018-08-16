@@ -40,8 +40,8 @@ cdef extern from "tins/ip.h" namespace "Tins" nogil:
         #void tot_len(uint16_t new_tot_len)         private
         uint16_t ident "id"() const
         void ident "id"(uint16_t new_id)
-        uint16_t frag_off() const
-        void frag_off(uint16_t new_frag_off)
+        uint16_t fragment_offset() const
+        void fragment_offset(uint16_t new_frag_off)
         uint8_t ttl() const
         void ttl(uint8_t new_ttl)
         uint8_t protocol() const

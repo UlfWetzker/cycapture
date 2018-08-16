@@ -21,7 +21,7 @@ cdef class IPReassembler(object):
     cpdef process(self, pdu):
         if not isinstance(pdu, PDU):
             raise TypeError
-        cdef packet_status status = int(self.assembler.process((<PDU> pdu).base_ptr[0]))
+        cdef PacketStatus status = int(self.assembler.process((<PDU> pdu).base_ptr[0]))
         if status != IPReassembler.Status.FRAGMENTED and self.py_callback is not None:
             self.py_callback(pdu)
         return status

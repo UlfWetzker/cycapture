@@ -308,19 +308,19 @@ cdef class IP(PDU):
 
 
     @property
-    def frag_off(self):
+    def fragment_offset(self):
         """
         Fragment offset field getter ('int')
         """
-        return <uint16_t> self.ptr.frag_off()
+        return <uint16_t> self.ptr.fragment_offset()
 
-    @frag_off.setter
-    def frag_off(self, value):
+    @fragment_offset.setter
+    def fragment_offset(self, value):
         """
         Fragment offset field setter ('int')
         """
         cdef uint16_t v = <uint16_t> int(value)
-        self.ptr.frag_off(v)
+        self.ptr.fragment_offset(v)
 
 
     @property

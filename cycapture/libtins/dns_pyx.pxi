@@ -279,8 +279,8 @@ cdef class DNS(PDU):
         'ANY': DNS_ANY
     })
 
-    Query = DNS_Query
-    Resource = DNS_Resource
+    query = DNS_Query
+    resource = DNS_Resource
 
     def __cinit__(self, _raw=False):
         if _raw:
@@ -318,14 +318,14 @@ cdef class DNS(PDU):
 
 
     @property
-    def qrtype(self):
+    def type(self):
         """
         type field getter ('int')
         """
         return int(self.ptr.get_type())
 
-    @qrtype.setter
-    def qrtype(self, value):
+    @type.setter
+    def type(self, value):
         """
         type field setter ('int')
         """
