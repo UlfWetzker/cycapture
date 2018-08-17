@@ -1,3 +1,6 @@
 [submodule "includes/libtins"]
 	path = includes/libtins
 	url = https://github.com/mfontanini/libtins.git
+[submodule "includes/libpcap"]
+	path = includes/libpcap
+	url = https://github.com/the-tcpdump-group/libpcap.git
