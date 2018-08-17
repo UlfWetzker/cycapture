@@ -34,7 +34,6 @@ if IS_MACOSX:
     # suppress painful warnings
     disutils_sysconfig['CFLAGS'] = disutils_sysconfig['CFLAGS'].replace('-Wstrict-prototypes', '')
 
-
 class Dependency(object):
     def __init__(self):
         self.name = None
@@ -310,7 +309,7 @@ if not on_rtd:
     tins_exceptions_extension = Extension(
         name="cycapture.libtins._py_exceptions",
         sources=[
-            "cycapture/libtins/_py_exceptions.cpp",
+            "cycapture/libtins/_py_exceptions.pyx",
             "cycapture/libtins/custom_exception_handler.cpp"
         ],
         language="c++"
@@ -324,7 +323,7 @@ if not on_rtd:
     tins_extension = Extension(
         name="cycapture.libtins._tins",
         sources=[
-            "cycapture/libtins/_tins.cpp",
+            "cycapture/libtins/_tins.pyx",
             "cycapture/libtins/wrap.cpp",
             "cycapture/libtins/py_tcp_stream_functor.cpp",
             "cycapture/libtins/py_pdu_iterator.cpp"
@@ -370,7 +369,7 @@ def run_setup():
         packages=find_packages(exclude=['tests']),
         package_data={'': ['libtins.*', 'libpcap.*']},
         setup_requires=[
-            'setuptools_git', 'setuptools', 'twine', 'wheel', 'nose'
+            'setuptools_git', 'setuptools', 'twine', 'wheel', 'nose', 'cython>=0.25'
         ],
         include_package_data=True,
         exclude_package_data={},
