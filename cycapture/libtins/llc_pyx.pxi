@@ -190,7 +190,7 @@ cdef class LLC(PDU):
 
 
     @property
-    def supervisory_function__get__(self):
+    def supervisory_function(self):
         """
         supervisory function (:py:class:`~.LLC.SupervisoryFunctions`; only applied if format is SUPERVISORY)
         """

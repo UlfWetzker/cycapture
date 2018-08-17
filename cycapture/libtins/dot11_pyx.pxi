@@ -1563,7 +1563,7 @@ cdef class Capabilities(object):
 
 
     @property
-    def flas(self):
+    def flag(self):
         '''
         sst flag getter (`bool`)
         '''
@@ -1611,7 +1611,7 @@ cdef class Capabilities(object):
 
 
     @property
-    def dss_ofdm(self):
+    def dsss_ofdm(self):
         '''
         dsss_ofdm flag getter (`bool`)
         '''

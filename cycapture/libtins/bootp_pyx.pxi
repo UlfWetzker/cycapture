@@ -122,7 +122,7 @@ cdef class BootP(PDU):
 
 
     @property
-    def passing(self):
+    def padding(self):
         """
         padding field getter (`int`)
         """

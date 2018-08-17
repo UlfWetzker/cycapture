@@ -421,7 +421,7 @@ cdef class TCP(PDU):
 
 
     @property
-    def aktchecksum(self):
+    def altchecksum(self):
         """
         Altchecksum getter
         """

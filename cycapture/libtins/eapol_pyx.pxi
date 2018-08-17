@@ -159,7 +159,7 @@ cdef class RC4EAPOL(EAPOL):
 
 
     @property
-    def key_flag__get__(self):
+    def key_flag(self):
         '''
         Key flag getter ('bool')
         '''
@@ -301,7 +301,7 @@ cdef class RSNEAPOL(EAPOL):
 
 
     @property
-    def replay_counter__get__(self):
+    def replay_counter(self):
         '''
         Replay counter getter ('int')
         '''

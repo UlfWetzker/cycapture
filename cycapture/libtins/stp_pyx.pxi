@@ -284,7 +284,7 @@ cdef class STP(PDU):
         """
         return bpdu_id.from_native(self.ptr.bridge_id())
 
-    @bridge_id
+    @bridge_id.setter
     def bridge_id(self, value):
         """
         Bridge ID field setter (:py:class:`~.bpdu_id`)
