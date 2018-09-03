@@ -124,7 +124,7 @@ class LibpcapDep(Dependency):
                     join(self.thisdir, 'cycapture', 'libpcap', 'libpcap.so.1'),
                     join(self.thisdir, 'cycapture', 'libpcap', 'libpcap.so')
                 )
-            except OSError, e:
+            except OSError as e:
                 if e.errno == errno.EEXIST:
                     os.remove(join(self.thisdir, 'cycapture', 'libpcap', 'libpcap.so'))
                     os.symlink(
@@ -297,7 +297,10 @@ if not on_rtd:
     # build libpcap and the cycapture.libpcap python extension
     pcap_extension = Extension(
         name="cycapture.libpcap._pcap",
-        sources=["cycapture/libpcap/_pcap.c"]
+        sources=["cycapture/libpcap/_pcap.pyx"],
+        # uncomment for debugging
+        extra_compile_args=["-g"],
+        extra_link_args=["-g"],
     )
     libpcap_dep = LibpcapDep()
     # noinspection PyTypeChecker
@@ -312,6 +315,9 @@ if not on_rtd:
             "cycapture/libtins/_py_exceptions.pyx",
             "cycapture/libtins/custom_exception_handler.cpp"
         ],
+        # uncomment for debugging
+        extra_compile_args=["-g"],
+        extra_link_args=["-g"],
         language="c++"
     )
 
@@ -328,6 +334,9 @@ if not on_rtd:
             "cycapture/libtins/py_tcp_stream_functor.cpp",
             "cycapture/libtins/py_pdu_iterator.cpp"
         ],
+        # uncomment for debugging
+        extra_compile_args=["-g"],
+        extra_link_args=["-g"],
         language="c++"
     )
     # noinspection PyTypeChecker
