@@ -123,98 +123,128 @@ cdef class BaseSniffer(object):
     def __dealloc__(self):
         self.close()
 
-    property read_timeout:
-        """
-        PCAP read timeout in miliseconds (`int`)
-        """
-        def __get__(self):
-            return self._read_timeout
 
-        def __set__(self, value):
-            value = int(value)
-            if self.activated:
-                raise AlreadyActivated()
-            if value < 0:
-                value = 0
-            self._read_timeout = value
+    @property
+    def read_timeout(self):
+        """
+        PCAP read timeout getter in miliseconds ('int')
+        """
+        return self._read_timeout
+
+    @read_timeout.setter
+    def read_timeout(self, value):
+        """
+        PCAP read timeout setter in miliseconds ('int')
+        """
+        value = int(value)
+        if self.activated:
+            raise AlreadyActivated()
+        if value < 0:
+            value = 0
+        self._read_timeout = value
+
 
     cdef _apply_read_timeout(self):
         cdef int res = pcap_set_timeout(self._handle, self._read_timeout)
         if res != 0:
             raise SetTimeoutError('Error setting read timeout')
 
-    property buffer_size:
-        """
-        PCAP buffer size in bytes (`int`)
-        """
-        def __get__(self):
-            return self._buffer_size
 
-        def __set__(self, value):
-            value = int(value)
-            if self.activated:
-                raise AlreadyActivated()
-            if value < 0:
-                value = 0
-            self._buffer_size = value
+    @property
+    def buffer_size(self):
+        """
+        PCAP buffer size getter in bytes ('int')
+        """
+        return self._buffer_size
+
+    @buffer_size.setter
+    def buffer_size(self, value):
+        """
+        PCAP buffer size setter in bytes ('int')
+        """
+        value = int(value)
+        if self.activated:
+            raise AlreadyActivated()
+        if value < 0:
+            value = 0
+        self._buffer_size = value
+
 
     cdef _apply_buffer_size(self):
         cdef int res = pcap_set_buffer_size(self._handle, self._buffer_size)
         if res != 0:
             raise SetBufferSizeError("Error setting buffer size")
 
-    property snapshot_length:
-        """
-        PCAP snapshot length in bytes (`int`)
-        """
-        def __get__(self):
-            return self._snapshot_length
 
-        def __set__(self, value):
-            if self.activated:
-                raise AlreadyActivated()
-            value = int(value)
-            if value < 0 or value > 65536:
-                raise ValueError("snapshot_length must be 0 <= x <= 65536")
-            self._snapshot_length = value
+    @property
+    def snapshot_length(self):
+        """
+        PCAP snapshot length in bytes ('int')
+        """
+        return self._snapshot_length
+
+    @snapshot_length.setter
+    def snapshot_length(self, value):
+        """
+        PCAP snapshot length in bytes ('int')
+        """
+        if self.activated:
+            raise AlreadyActivated()
+        value = int(value)
+        if value < 0 or value > 65536:
+            raise ValueError("snapshot_length must be 0 <= x <= 65536")
+        self._snapshot_length = value
+
 
     cdef _apply_snapshot_length(self):
         cdef int res = pcap_set_snaplen(self._handle, self._snapshot_length)
         if res != 0:
             raise SetSnapshotLengthError("Error setting snapshot length")
 
-    property promisc_mode:
-        """
-        PCAP promisc mode (`bool`)
-        """
-        def __get__(self):
-            return self._promisc_mode
 
-        def __set__(self, bool value):
-            if self.activated:
-                raise AlreadyActivated()
-            self._promisc_mode = 1 if value else 0
+    @property
+    def promisc_mode(self):
+        """
+        PCAP promisc mode getter ('bool')
+        """
+        return self._promisc_mode
+
+    @promisc_mode.setter
+    def promisc_mode(self, bool value):
+        """
+        PCAP promisc mode setter ('bool')
+        """
+        if self.activated:
+            raise AlreadyActivated()
+        self._promisc_mode = 1 if value else 0
+
 
     cdef _apply_promisc_mode(self):
         cdef int res = pcap_set_promisc(self._handle, self._promisc_mode)
         if res != 0:
             raise SetPromiscModeError("promisc mode could not be set")
 
-    property monitor_mode:
-        """
-        PCAP monitoring mode (`bool`)
-        """
-        def __get__(self):
-            return self._monitor_mode
 
-        def __set__(self, bool value):
-            if self.activated:
-                raise AlreadyActivated()
-            cdef int v = 1 if value else 0
-            can_set, reason = self.can_set_monitor_mode
-            if v and not can_set:
-                raise SetMonitorModeError(reason)
-            self._monitor_mode = v
+    @property 
+    def monitor_mode(self):
+        """
+        PCAP monitoring mode getter ('bool')
+        """
+        return self._monitor_mode
+
+    @monitor_mode.setter
+    def monitor_mode(self, bool value):
+        """
+        PCAP monitoring mode getter ('bool')
+        """
+        if self.activated:
+            raise AlreadyActivated()
+        cdef int v = 1 if value else 0
+        can_set, reason = self.can_set_monitor_mode if value else (False, b'')
+        if v and not can_set:
+            raise SetMonitorModeError(reason)
+        self._monitor_mode = v
+
 
     cdef _apply_monitor_mode(self):
         if self._monitor_mode:
@@ -222,57 +252,68 @@ cdef class BaseSniffer(object):
                 if pcap_set_rfmon(self._handle, self._monitor_mode) != 0:
                     raise SetMonitorModeError("monitor mode could not be set")
 
-    property can_set_monitor_mode:
+    @property
+    def can_set_monitor_mode(self):
         """
-        Whether the monitoring mode is available (read-only, `bool`)
+        Getter for the availability of the monitoring mode ('bool')
         """
-        def __get__(self):
-            cdef int res = pcap_can_set_rfmon(self._handle)
-            if res == 1:
-                return True, b''
-            elif res == 0:
-                return False, b''
-            elif res == PCAP_ERROR_NO_SUCH_DEVICE:
-                return False, b"the capture source specified when the handle was created doesn't exist"
-            elif res == PCAP_ERROR_PERM_DENIED:
-                return False, b"the process doesn't have permission to check whether monitor mode could be supported"
-            elif res == PCAP_ERROR_ACTIVATED:
-                return False, b"already activated"
-            elif res == PCAP_ERROR:
-                return False, <bytes> pcap_geterr(self._handle)
-            else:
-                raise PcapExceptionFactory(res, b"error in can_set_monitor_mode: %s" % res)
+        cdef int res = pcap_can_set_rfmon(self._handle)
+        if res == 1:
+            return True, b''
+        elif res == 0:
+            return False, b''
+        elif res == PCAP_ERROR_NO_SUCH_DEVICE:
+            return False, b"the capture source specified when the handle was created doesn't exist"
+        elif res == PCAP_ERROR_PERM_DENIED:
+            return False, b"the process doesn't have permission to check whether monitor mode could be supported"
+        elif res == PCAP_ERROR_ACTIVATED:
+            return False, b"already activated"
+        elif res == PCAP_ERROR:
+            return False, <bytes> pcap_geterr(self._handle)
+        else:
+            raise PcapExceptionFactory(res, b"error in can_set_monitor_mode: %s" % res)
 
-    property direction:
+    @property
+    def direction(self):
         """
-        Capture direction (:py:class:`~.BaseSniffer.DIRECTION`)
+        Capture direction getter (:py:class:`~.BaseSniffer.DIRECTION`)
         """
-        def __get__(self):
-            return self._direction
+        return self._direction
 
-        def __set__(self, value):
-            self._direction = BaseSniffer.DIRECTION(value)
+    @direction.setter
+    def direction(self, value):
+        """
+        Capture direction setter (:py:class:`~.BaseSniffer.DIRECTION`)
+        """
+        self._direction = BaseSniffer.DIRECTION(value)
+
 
     cdef _apply_direction(self):
         cdef int res = pcap_setdirection(self._handle, <pcap_direction_t> self._direction)
         if res != 0:
             raise SetDirectionError('Error setting direction')
 
-    property filter:
-        """
-        PCAP filter (`bytes`)
 
+    @property
+    def filter(self):
+        """
+        PCAP filter getter ('bytes')
         .. seealso:: `pcap filter syntax manual page <http://www.tcpdump.org/manpages/pcap-filter.7.html>`_
         """
-        def __get__(self):
-            return self._filter
+        return self._filter
 
-        def __set__(self, value):
-            value = bytes(value)
-            if value:
-                self._filter = value
-                if self.activated:
-                    self._apply_filter()
+    @filter.setter
+    def filter(self, value):
+        """
+        PCAP filter setter ('bytes')
+        .. seealso:: `pcap filter syntax manual page <http://www.tcpdump.org/manpages/pcap-filter.7.html>`_
+        """
+        value = bytes(value)
+        if value:
+            self._filter = value
+            if self.activated:
+                self._apply_filter()
+
 
     cdef _apply_filter(self):
         cdef unsigned int netmask
@@ -289,22 +330,26 @@ cdef class BaseSniffer(object):
             if res != 0:
                 raise PcapException(bytes(pcap_geterr(self._handle)))
 
-    property datalink:
+    @property
+    def datalink(self):
         """
-        PCAP datalink type (:py:class:`~.BaseSniffer.DLT`)
+        PCAP datalink type getter (:py:class:`~.BaseSniffer.DLT`)
         """
-        def __get__(self):
-            cdef int res
-            with self.activate_if_needed():
-                res = pcap_datalink(self._handle)
-            name, description = datalink_to_description(res)
-            return res, name, description
+        cdef int res
+        with self.activate_if_needed():
+            res = pcap_datalink(self._handle)
+        name, description = datalink_to_description(res)
+        return res, name, description
 
-        def __set__(self, value):
-            cdef int res
-            self._datalink = int(value)
-            if self.activated:
-                self._apply_datalink()
+    @datalink.setter
+    def datalink(self, value):
+        """
+        PCAP datalink type setter (:py:class:`~.BaseSniffer.DLT`)
+        """
+        cdef int res
+        self._datalink = int(value)
+        if self.activated:
+            self._apply_datalink()
 
 
     cdef _apply_datalink(self):
