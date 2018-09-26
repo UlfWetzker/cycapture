@@ -7,7 +7,12 @@
 namespace Tins {
 
     PyObject* std_string_to_pyobj(const std::string s) {
-        return PyString_FromStringAndSize(s.c_str(), (Py_ssize_t) s.size());
+        #if PY_MAJOR_VERSION < 3
+            return PyString_FromStringAndSize(s.c_str(), (Py_ssize_t) s.size());
+        #else
+            return PyUnicode_FromStringAndSize(s.c_str(), (Py_ssize_t) s.size());
+        #endif
+
     }
 
     PyObject* make_mview(const TCPStream::payload_type& payload) {
