@@ -124,7 +124,7 @@ class LibpcapDep(Dependency):
                     join(self.thisdir, 'cycapture', 'libpcap', 'libpcap.so.1'),
                     join(self.thisdir, 'cycapture', 'libpcap', 'libpcap.so')
                 )
-            except OSError, e:
+            except OSError as e:
                 if e.errno == errno.EEXIST:
                     os.remove(join(self.thisdir, 'cycapture', 'libpcap', 'libpcap.so'))
                     os.symlink(
