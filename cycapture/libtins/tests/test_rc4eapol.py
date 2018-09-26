@@ -55,8 +55,8 @@ class RC4_EAPOL_Test(unittest.TestCase):
 
     def test_replay_counter(self):
         eapol = RC4EAPOL()
-        eapol.replay_counter = 0x7af3d91a1fd3abL
-        eq_(eapol.replay_counter, 0x7af3d91a1fd3abL)
+        eapol.replay_counter = 0x7af3d91a1fd3ab
+        eq_(eapol.replay_counter, 0x7af3d91a1fd3ab)
 
     def test_key_iv(self):
         iv =_f(range(RC4EAPOL.key_iv_size))
